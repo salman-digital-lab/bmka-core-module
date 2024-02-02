@@ -4,6 +4,7 @@ import type { BelongsTo, HasOne } from '@adonisjs/lucid/types/relations'
 import Province from '#models/province'
 import PublicUser from '#models/public_user'
 import City from '#models/city'
+import University from '#models/university'
 
 export default class Profile extends BaseModel {
   @column({ isPrimary: true })
@@ -47,6 +48,14 @@ export default class Profile extends BaseModel {
     foreignKey: 'cityId',
   })
   declare city: BelongsTo<typeof City>
+
+  @column()
+  declare universityId: number
+
+  @belongsTo(() => University, {
+    foreignKey: 'universityId',
+  })
+  declare university: BelongsTo<typeof University>
 
   @column()
   declare major: string

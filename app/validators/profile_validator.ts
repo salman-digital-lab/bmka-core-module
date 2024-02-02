@@ -9,7 +9,7 @@ export const updateProfileValidator = vine.compile(
     instagram: vine.string(),
     province_id: vine.number(),
     city_id: vine.number(),
-    university: vine.number(),
+    university_id: vine.number(),
     intake_year: vine.string(),
     major: vine.string(),
     level: vine.number(),
