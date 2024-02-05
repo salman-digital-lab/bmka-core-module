@@ -45,6 +45,23 @@ export default class ActivitiesController {
     }
   }
 
+  async store({ request, response }: HttpContext) {
+    try {
+      const payload = await activityValidator.validate(request.all())
+      const activityData = await Activity.create(payload)
+
+      return response.ok({
+        message: 'CREATE_DATA_SUCCESS',
+        data: activityData,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
   async update({ params, request, response }: HttpContext) {
     try {
       const payload = await activityValidator.validate(request.all())

@@ -2,6 +2,10 @@ import router from '@adonisjs/core/services/router'
 const ProfilesController = () => import('#controllers/profiles_controller')
 const ActivitiesController = () => import('#controllers/activities_controller')
 
+router.get('/', () => {
+  return 'Hello world from the home page.'
+})
+
 router
   .group(() => {
     router
@@ -18,6 +22,6 @@ router
         router.get('/:id', [ActivitiesController, 'show'])
         router.get('', [ActivitiesController, 'index'])
       })
-      .prefix('activity')
+      .prefix('activities')
   })
   .prefix('v2')
