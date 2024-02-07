@@ -21,6 +21,7 @@ router
         router.put('/:id', [ActivitiesController, 'update'])
         router.get('/:id', [ActivitiesController, 'show'])
         router.get('', [ActivitiesController, 'index'])
+        router.post('', [ActivitiesController, 'store'])
       })
       .prefix('activities')
   })

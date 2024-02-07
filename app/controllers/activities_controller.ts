@@ -1,6 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Activity from '#models/activity'
 import { activityValidator } from '#validators/activity_validator'
+import { DateTime } from 'luxon'
 
 export default class ActivitiesController {
   async index({ request, response }: HttpContext) {
@@ -46,8 +47,9 @@ export default class ActivitiesController {
   }
 
   async store({ request, response }: HttpContext) {
+    let payload = await activityValidator.validate(request.all())
+
     try {
-      const payload = await activityValidator.validate(request.all())
       const activityData = await Activity.create(payload)
 
       return response.ok({
@@ -57,14 +59,14 @@ export default class ActivitiesController {
     } catch (error) {
       return response.internalServerError({
         message: 'GENERAL_ERROR',
-        error: error.message,
+        error: error.stack,
       })
     }
   }
 
   async update({ params, request, response }: HttpContext) {
+    const payload = await activityValidator.validate(request.all())
     try {
-      const payload = await activityValidator.validate(request.all())
       const id: number = params.id
       const activityData = await Activity.findOrFail(id)
       const updated = await activityData.merge(payload).save()
