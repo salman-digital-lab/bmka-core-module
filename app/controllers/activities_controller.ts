@@ -50,7 +50,15 @@ export default class ActivitiesController {
     let payload = await activityValidator.validate(request.all())
 
     try {
-      const activityData = await Activity.create(payload)
+      const activityData = await Activity.create({
+        ...payload,
+        activityStart: DateTime.fromJSDate(payload.activity_start),
+        activityEnd: DateTime.fromJSDate(payload.activity_end),
+        registrationStart: DateTime.fromJSDate(payload.registration_start),
+        registrationEnd: DateTime.fromJSDate(payload.registration_end),
+        selectionStart: DateTime.fromJSDate(payload.selection_start),
+        selectionEnd: DateTime.fromJSDate(payload.selection_end),
+      })
 
       return response.ok({
         message: 'CREATE_DATA_SUCCESS',

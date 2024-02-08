@@ -5,9 +5,7 @@ export const activityValidator = vine.compile(
     name: vine.string(),
     slug: vine.string(),
     description: vine.string(),
-    activity_start: vine.date({
-      formats: ['YYYY/MM/DD'],
-    }),
+    activity_start: vine.date(),
     activity_end: vine.date().afterField('activity_start'),
     registration_start: vine.date(),
     registration_end: vine.date().afterField('registration_start'),

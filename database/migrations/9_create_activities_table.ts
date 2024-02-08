@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.date('register_end').notNullable().defaultTo(null)
       table.date('selection_start').notNullable().defaultTo(null)
       table.date('selection_end').notNullable().defaultTo(null)
+      table.integer('minimum_role').notNullable()
       table
         .enu('activity_type', ['common', 'registration_only', 'ssc', 'lmd', 'spectra', 'komprof'])
         .defaultTo('common')
