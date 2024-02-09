@@ -20,5 +20,6 @@ export const activityValidator = vine.compile(
       })
       .optional(),
     is_published: vine.number(),
+    additional_questionnaire: vine.string(),
   })
 )

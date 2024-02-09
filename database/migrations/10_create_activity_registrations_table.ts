@@ -8,7 +8,9 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('user_id').references('id').inTable('public_users').onDelete('CASCADE')
       table.integer('activity_id').references('id').inTable('activities').onDelete('CASCADE')
-      table.enu('status', ['REGISTERED', 'JOINED', 'PASSED', 'FAILED']).defaultTo('REGISTERED')
+      table
+        .enu('status', ['REGISTERED', 'JOINED', 'PASSED', 'FAILED', 'REJECTED'])
+        .defaultTo('REGISTERED')
       table.text('questionnaire_answer', 'longtext').defaultTo('[]')
 
       table.timestamp('created_at')
