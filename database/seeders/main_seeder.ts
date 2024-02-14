@@ -9,7 +9,6 @@ import { ActivityRegistrationFactory } from '#database/factories/activity_regist
 
 export default class extends BaseSeeder {
   async run() {
-    // Write your database queries inside the run method
     await UniversityFactory.createMany(10)
     await ProvinceFactory.createMany(10)
     await CityFactory.createMany(15)

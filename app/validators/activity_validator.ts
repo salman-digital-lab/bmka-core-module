@@ -20,6 +20,15 @@ export const activityValidator = vine.compile(
       })
       .optional(),
     is_published: vine.number(),
-    additional_questionnaire: vine.string(),
+    additional_questionnaire: vine.string().optional(),
+  })
+)
+
+export const imageValidator = vine.compile(
+  vine.object({
+    images: vine.file({
+      size: '2mb',
+      extnames: ['jpg', 'png', 'jpeg'],
+    }),
   })
 )
