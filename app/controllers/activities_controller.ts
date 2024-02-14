@@ -1,6 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 import Activity from '#models/activity'
-import { activityValidator } from '#validators/activity_validator'
+import { activityValidator, imageValidator } from '#validators/activity_validator'
 import { DateTime } from 'luxon'
 
 export default class ActivitiesController {
@@ -46,9 +47,64 @@ export default class ActivitiesController {
     }
   }
 
-  async store({ request, response }: HttpContext) {
-    let payload = await activityValidator.validate(request.all())
+  async uploadImage({ request, params, response }: HttpContext) {
+    const payload = await request.validateUsing(imageValidator)
+    const activityId = params.id
+    try {
+      const activity = await Activity.find(activityId)
+      if (!activity) {
+        return response.notFound({
+          message: 'ACTIVITY_NOT_FOUND',
+        })
+      }
+      var fileNames: string[] = activity.images.split(',')
+      const image = payload.images
 
+      let newName = `${new Date().getTime()}.${image.subtype}`
+      await image.move(app.publicPath('activity-images'), {
+        name: newName,
+        overwrite: true,
+      })
+
+      fileNames.push(newName)
+
+      await activity.merge({ images: fileNames.toString() }).save()
+
+      return response.ok({
+        message: 'UPLOAD_IMAGE_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async deleteImage({ request, params, response }: HttpContext) {
+    const activityId = params.id
+    const payload = request.all()
+    try {
+      const activity = await Activity.findOrFail(activityId)
+      const images: string[] = activity.images.split(',')
+      if (images.length !== 0) {
+        images.splice(payload.index, 1)
+      }
+      await activity.merge({ images: images.toString() }).save()
+
+      return response.ok({
+        message: 'DELETE_IMAGE_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async store({ request, response }: HttpContext) {
+    const payload = await activityValidator.validate(request.all())
     try {
       const activityData = await Activity.create({
         ...payload,
@@ -74,6 +130,7 @@ export default class ActivitiesController {
 
   async update({ params, request, response }: HttpContext) {
     const payload = await activityValidator.validate(request.all())
+
     try {
       const id: number = params.id
       const activityData = await Activity.findOrFail(id)

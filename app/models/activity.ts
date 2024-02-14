@@ -45,6 +45,9 @@ export default class Activity extends BaseModel {
   declare additionalConfig: string
 
   @column()
+  declare images: string
+
+  @column()
   declare isPublished: boolean
 
   @column.dateTime({ autoCreate: true })

@@ -19,6 +19,7 @@ export default class extends BaseSchema {
       table
         .enu('activity_type', ['common', 'registration_only', 'ssc', 'lmd', 'spectra', 'komprof'])
         .defaultTo('common')
+      table.string('images', 255).nullable()
       table.text('additional_questionnaire', 'longtext').nullable().defaultTo('[]')
       table.text('additional_config', 'longtext').nullable().defaultTo('[]')
       table.integer('is_published', 1).defaultTo(1)
