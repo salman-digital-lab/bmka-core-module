@@ -3,7 +3,6 @@ import Profile from '#models/profile'
 import Province from '#models/province'
 import City from '#models/city'
 import University from '#models/university'
-import PublicUser from '#models/public_user'
 
 export const ProfileFactory = factory
   .define(Profile, async ({ faker }) => {

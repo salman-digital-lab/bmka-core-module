@@ -1,5 +1,5 @@
 import router from '@adonisjs/core/services/router'
-//import { middleware } from '#start/kernel'
+import { middleware } from '#start/kernel'
 const ProfilesController = () => import('#controllers/profiles_controller')
 const ActivitiesController = () => import('#controllers/activities_controller')
 const ActivityRegistrationsController = () =>
@@ -26,6 +26,7 @@ router
         router.get('', [ProfilesController, 'index'])
       })
       .prefix('profiles')
+      .use(middleware.auth())
 
     router
       .group(() => {
@@ -37,6 +38,7 @@ router
         router.put(':id/delete-image', [ActivitiesController, 'deleteImage'])
       })
       .prefix('activities')
+      .use(middleware.auth())
 
     router
       .group(() => {
@@ -46,5 +48,6 @@ router
         router.get('export/:id', [ActivityRegistrationsController, 'export'])
       })
       .prefix('activity-registrations')
+      .use(middleware.auth())
   })
   .prefix('v2')

@@ -22,7 +22,7 @@ export default class AuthController {
       })
 
       return response.ok({
-        message: 'LOGIN_SUCCESS',
+        message: 'REGISTER_SUCCESS',
         data: user,
       })
     } catch (error) {
