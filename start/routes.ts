@@ -2,7 +2,8 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
 const ProfilesController = () => import('#controllers/profiles_controller')
 const ActivitiesController = () => import('#controllers/activities_controller')
-const ActivityRegistrationsController = () => import('#controllers/activity_registrations_controller')
+const ActivityRegistrationsController = () =>
+  import('#controllers/activity_registrations_controller')
 const AuthController = () => import('#controllers/auth_controller')
 
 router.get('/', () => {

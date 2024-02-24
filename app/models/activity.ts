@@ -39,6 +39,9 @@ export default class Activity extends BaseModel {
   declare activityType: string
 
   @column()
+  declare activityCategory: number
+
+  @column()
   declare additionalQuestionnaire: string
 
   @column()

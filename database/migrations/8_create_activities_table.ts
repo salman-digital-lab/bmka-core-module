@@ -15,28 +15,17 @@ export default class extends BaseSchema {
       table.date('registration_end').notNullable().defaultTo(null)
       table.date('selection_start').notNullable().defaultTo(null)
       table.date('selection_end').notNullable().defaultTo(null)
-      table.integer('minimum_level').notNullable().defaultTo(1)
+      table.integer('minimum_level').notNullable().defaultTo(0)
       table
         .enu('activity_type', ['common', 'registration_only', 'ssc', 'lmd', 'spectra', 'komprof'])
         .defaultTo('common')
-      table
-        .enu('activity_category', [
-          'Aktualisasi Diri',
-          'Kaderisasi Lanjut',
-          'SSC',
-          'LMD',
-          'SPECTRA',
-          'Pelatihan',
-          'Keasramaan',
-          'Media Marketing',
-          'Open Recruitment',
-          'Beasiswa',
-          'Inventra',
-        ])
-        .defaultTo('common')
+      table.integer('activity_category').defaultTo(null)
       table.string('images', 255).nullable()
       table.text('additional_questionnaire', 'longtext').nullable().defaultTo('[]')
-      table.text('additional_config', 'longtext').nullable().defaultTo('[]')
+      table.text('additional_config', 'longtext').nullable().defaultTo(`{
+        custom_selection_data: [],
+        mandatory_profile_data: [],
+      }`)
       table.integer('is_published', 1).defaultTo(1)
 
       table.timestamp('created_at', { useTz: true })

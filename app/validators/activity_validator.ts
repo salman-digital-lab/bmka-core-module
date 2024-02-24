@@ -11,7 +11,7 @@ export const activityValidator = vine.compile(
     registration_end: vine.date().afterField('registration_start'),
     selection_start: vine.date(),
     selection_end: vine.date().afterField('selection_start'),
-    minimum_role: vine.number().withoutDecimals().positive(),
+    minimum_level: vine.number().withoutDecimals().positive(),
     activity_type: vine.enum(['common', 'registration_only', 'ssc', 'lmd', 'spectra', 'komprof']),
     additional_config: vine
       .object({
@@ -21,6 +21,7 @@ export const activityValidator = vine.compile(
       .optional(),
     is_published: vine.number(),
     additional_questionnaire: vine.string().optional(),
+    activity_category: vine.number().withoutDecimals().positive(),
   })
 )
 

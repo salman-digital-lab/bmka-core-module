@@ -154,10 +154,10 @@ export default class ActivityRegistrationsController {
 
         questionnaireAnswer sample:
         {
-          "text-102090":"Jawaban 1",
-          "text-102091":"Jawaban 2",
-          "text-102092":["Apple", "Peach"],
-          "text-102093":"Jawaban 2",
+          "0":"Jawaban 1",
+          "1":"Jawaban 2",
+          "2":"["Apple", "Peach"]",
+          "3":"Jawaban 2",
         }
 
         */

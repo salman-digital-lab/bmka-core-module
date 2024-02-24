@@ -14,7 +14,6 @@ export default class ActivitiesController {
       const activities = await Activity.query()
         .select('*')
         .where('name', 'ILIKE', search ? '%' + search + '%' : '%%')
-        .where('activity_type', 'ILIKE', search ? '%' + search + '%' : '%%')
         .orderBy('id', 'desc')
         .paginate(page, perPage)
 
