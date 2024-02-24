@@ -10,12 +10,18 @@ export default class ActivitiesController {
       const page = request.qs().page ?? 1
       const perPage = request.qs().per_page ?? 10
       const search = request.qs().search
+      const clause = {}
 
       const activities = await Activity.query()
         .select('*')
         .where('name', 'ILIKE', search ? '%' + search + '%' : '%%')
         .orderBy('id', 'desc')
         .paginate(page, perPage)
+
+      activities.map((item) => {
+        item.additionalConfig = JSON.parse(item.additionalConfig)
+        item.additionalQuestionnaire = JSON.parse(item.additionalQuestionnaire)
+      })
 
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
