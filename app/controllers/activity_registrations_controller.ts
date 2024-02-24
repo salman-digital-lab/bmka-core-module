@@ -2,6 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import ActivityRegistration from '#models/activity_registration'
 import Activity from '#models/activity'
 import Excel from 'exceljs'
+import Profile from '#models/profile'
 
 export default class ActivityRegistrationsController {
   async show({ params, response }: HttpContext) {
@@ -68,10 +69,17 @@ export default class ActivityRegistrationsController {
       const registrations = await ActivityRegistration.query()
         .where({ activityId: activityId })
         .preload('publicUser')
+        .select('*')
+
+      if (!registrations) {
+        return response.notFound({
+          message: 'REGISTRATIONS_NOT_AVAILABLE',
+        })
+      }
 
       const workbook = new Excel.Workbook()
       const worksheet = workbook.addWorksheet('Sheet 1')
-      const font = { name: 'Times New Roman', size: 12 }
+      const font = { name: 'Arial', size: 12 }
 
       worksheet.columns = [
         { header: 'No', key: 'no', width: 5, style: { font: font } },
@@ -119,9 +127,58 @@ export default class ActivityRegistrationsController {
         ]
       })
 
-      return response.ok({
-        messages: 'EXPORT_DATA_SUCCESS',
-      })
+      for (let [i, item] of registrations.entries()) {
+        let profile = await Profile.query()
+          .where('user_id', item.publicUser.id)
+          .preload('province')
+          .preload('city')
+          .preload('university')
+          .firstOrFail()
+
+        let profileRowData = {
+          no: i + 1,
+          name: profile.name,
+          gender: profile.gender,
+          email: item.publicUser.email,
+          whatsapp: profile.whatsapp,
+          line: profile.line,
+          instagram: profile.instagram,
+          province: profile.province.name,
+          city: profile.city.name,
+          university: profile.university.name,
+          major: profile.major,
+          intake_year: profile.intakeYear,
+          level: profile.level,
+        }
+        /*
+
+        questionnaireAnswer sample:
+        {
+          "text-102090":"Jawaban 1",
+          "text-102091":"Jawaban 2",
+          "text-102092":["Apple", "Peach"],
+          "text-102093":"Jawaban 2",
+        }
+
+        */
+
+        let parsedAnswers: { [index: string]: string } = JSON.parse(item.questionnaireAnswer)
+        let answers: string[] = Object.keys(parsedAnswers).map((key) => parsedAnswers[key])
+        let answerRowData = Object.assign({}, answers)
+        let rowData = { ...profileRowData, ...answerRowData }
+        worksheet.addRow(rowData)
+      }
+
+      const buffer = await workbook.xlsx.writeBuffer()
+
+      return response
+        .status(200)
+        .safeHeader('Content-type', 'application/vnd-ms-excel')
+        .safeHeader(
+          'Content-Disposition',
+          `attachment; filename=${activity.name.replace(/ /g, '-')}.xls`
+        )
+        .send(buffer)
     } catch (error) {
       return response.internalServerError({
         message: 'GENERAL_ERROR',

@@ -17,7 +17,7 @@ export const ActivityFactory = factory
       registration_end: today.plus({ days: 6 }),
       selection_start: today,
       selection_end: today.plus({ days: 6 }),
-      minimum_role: faker.number.int({ min: 1, max: 7 }),
+      minimum_level: faker.number.int({ min: 1, max: 7 }),
       activity_type: faker.string.fromCharacters(['common', 'ssc', 'lmd']),
       additional_config: {},
       is_published: faker.number.int({ min: 0, max: 1 }),
