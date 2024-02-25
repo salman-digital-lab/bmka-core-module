@@ -6,6 +6,7 @@ const ActivityRegistrationsController = () =>
   import('#controllers/activity_registrations_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const UniversitiesController = () => import('#controllers/universities_controller')
+const RuangCurhatController = () => import('#controllers/ruang_curhats_controller')
 
 router.get('/', () => {
   return 'Hello world from the home page.'
@@ -59,6 +60,15 @@ router
         router.get('export/:id', [ActivityRegistrationsController, 'export'])
       })
       .prefix('activity-registrations')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.put('/:id', [RuangCurhatController, 'update'])
+        router.get('/:id', [RuangCurhatController, 'show'])
+        router.get('', [RuangCurhatController, 'index'])
+      })
+      .prefix('ruang-curhat')
       .use(middleware.auth())
   })
   .prefix('v2')
