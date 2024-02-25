@@ -3,6 +3,7 @@ import app from '@adonisjs/core/services/app'
 import Activity from '#models/activity'
 import { activityValidator, imageValidator } from '#validators/activity_validator'
 import { DateTime } from 'luxon'
+import { unlink } from 'node:fs/promises'
 
 export default class ActivitiesController {
   async index({ request, response }: HttpContext) {
@@ -77,7 +78,14 @@ export default class ActivitiesController {
           message: 'ACTIVITY_NOT_FOUND',
         })
       }
-      var fileNames: string[] = activity.images.split(',')
+
+      var fileNames: string[]
+      if (activity.images !== null) {
+        fileNames = activity.images.split(',')
+      } else {
+        fileNames = []
+      }
+
       const image = payload.images
 
       let newName = `${new Date().getTime()}.${image.subtype}`
@@ -104,12 +112,21 @@ export default class ActivitiesController {
   async deleteImage({ request, params, response }: HttpContext) {
     const activityId = params.id
     const payload = request.all()
+    const index: number = payload.index
     try {
       const activity = await Activity.findOrFail(activityId)
-      const images: string[] = activity.images.split(',')
-      if (images.length !== 0) {
-        images.splice(payload.index, 1)
+
+      if (activity.images === null) {
+        return response.notFound({
+          message: 'IMAGE_NOT_FOUND',
+        })
       }
+
+      const filePath = `./public/activity-images/${activity.images[index]}`
+      await unlink(filePath)
+
+      const images: string[] = activity.images.split(',')
+      images.splice(index, 1)
       await activity.merge({ images: images.toString() }).save()
 
       return response.ok({

@@ -7,6 +7,8 @@ const ActivityRegistrationsController = () =>
 const AuthController = () => import('#controllers/auth_controller')
 const UniversitiesController = () => import('#controllers/universities_controller')
 const RuangCurhatController = () => import('#controllers/ruang_curhats_controller')
+const ProvincesController = () => import('#controllers/provinces_controller')
+const CitiesController = () => import('#controllers/cities_controller')
 
 router.get('/', () => {
   return 'Hello world from the home page.'
@@ -70,5 +72,18 @@ router
       })
       .prefix('ruang-curhat')
       .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.get('', [ProvincesController, 'index'])
+        router.get(':id/cities', [CitiesController, 'getByProvinceId'])
+      })
+      .prefix('provinces')
+
+    router
+      .group(() => {
+        router.get('', [CitiesController, 'index'])
+      })
+      .prefix('cities')
   })
   .prefix('v2')
