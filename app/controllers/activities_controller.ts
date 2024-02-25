@@ -10,10 +10,25 @@ export default class ActivitiesController {
       const page = request.qs().page ?? 1
       const perPage = request.qs().per_page ?? 10
       const search = request.qs().search
-      const clause = {}
+
+      type Clause = {
+        activity_category: number
+        minimum_level: number
+      }
+
+      const clause = <Clause>{}
+
+      if (request.qs().category) {
+        clause.activity_category = request.qs().category
+      }
+
+      if (request.qs().minimumLevel) {
+        clause.minimum_level = request.qs().minimumLevel
+      }
 
       const activities = await Activity.query()
         .select('*')
+        .where(clause)
         .where('name', 'ILIKE', search ? '%' + search + '%' : '%%')
         .orderBy('id', 'desc')
         .paginate(page, perPage)

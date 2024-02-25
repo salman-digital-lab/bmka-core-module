@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.integer('university_id', 4).references('id').inTable('universities')
       table.string('major', 50)
       table.string('intake_year', 4)
-      table.integer('level')
+      table.integer('level').defaultTo(0)
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

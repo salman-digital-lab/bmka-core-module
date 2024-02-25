@@ -5,6 +5,7 @@ const ActivitiesController = () => import('#controllers/activities_controller')
 const ActivityRegistrationsController = () =>
   import('#controllers/activity_registrations_controller')
 const AuthController = () => import('#controllers/auth_controller')
+const UniversitiesController = () => import('#controllers/universities_controller')
 
 router.get('/', () => {
   return 'Hello world from the home page.'
@@ -18,6 +19,16 @@ router
         router.post('login', [AuthController, 'login'])
       })
       .prefix('auth')
+
+    router
+      .group(() => {
+        router.post('', [UniversitiesController, 'store'])
+        router.put('/:id', [UniversitiesController, 'update'])
+        router.get('/:id', [UniversitiesController, 'show'])
+        router.get('', [UniversitiesController, 'index'])
+      })
+      .prefix('universities')
+      .use(middleware.auth())
 
     router
       .group(() => {

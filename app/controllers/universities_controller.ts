@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import University from '#models/university'
+import { UniversityValidator } from '#validators/university_validator'
 
 export default class UniversitiesController {
   async index({ request, response }: HttpContext) {
@@ -43,9 +44,26 @@ export default class UniversitiesController {
     }
   }
 
-  async update({ params, request, response }: HttpContext) {
+  async store({ request, response }: HttpContext) {
+    const { name } = await UniversityValidator.validate(request.all())
     try {
-      const { name } = request.all()
+      const university = await University.create({ name: name })
+
+      return response.ok({
+        message: 'CREATE_DATA_SUCCESS',
+        data: university,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async update({ params, request, response }: HttpContext) {
+    const { name } = await UniversityValidator.validate(request.all())
+    try {
       const id: number = params.id
       const university = await University.findOrFail(id)
       const updated = await university.merge({ name: name }).save()
