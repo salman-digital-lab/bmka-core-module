@@ -32,7 +32,7 @@ export default class RuangCurhat extends BaseModel {
   declare handlingTechnic: string
 
   @column()
-  declare counselourGender: string
+  declare counselorGender: string
 
   @column()
   declare counselorId: number
