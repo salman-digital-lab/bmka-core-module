@@ -30,7 +30,16 @@ export const ActivityFactory = factory
       selection_start: today,
       selection_end: today.plus({ days: 6 }),
       minimum_level: faker.number.int({ min: 0, max: 6 }),
-      activity_type: faker.string.fromCharacters(['common', 'ssc', 'lmd']),
+      activity_type: faker.string.fromCharacters([
+        'common',
+        'registration_only',
+        'ssc',
+        'kk',
+        'lmd',
+        'inventra',
+        'komprof',
+        'spectra',
+      ]),
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: faker.number.int({ min: 0, max: 1 }),
       additionalConfig: JSON.stringify({
@@ -67,14 +76,14 @@ export const ActivityFactory = factory
         },
         {
           type: 'text',
-          label: 'Apa motivasimu mengikuti I-Class Public Speaking#1 : Podcast?',
+          label: 'Apa motivasimu mengikuti kegiatan ini?',
           name: 'text1664619435933',
           required: true,
         },
         {
           type: 'text',
           label:
-            'Jika iya, apakah sudah memiliki channel podcast sendiri? (Bisa disebutkan nama channel & medianya) ',
+            'Apakah sudah memiliki channel podcast sendiri? (Bisa disebutkan nama channel & medianya) ',
           name: 'text1664619514471',
           required: true,
         },

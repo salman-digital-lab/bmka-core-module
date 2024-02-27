@@ -17,7 +17,16 @@ export default class extends BaseSchema {
       table.date('selection_end').notNullable().defaultTo(null)
       table.integer('minimum_level').notNullable().defaultTo(0)
       table
-        .enu('activity_type', ['common', 'registration_only', 'ssc', 'lmd', 'spectra', 'komprof'])
+        .enu('activity_type', [
+          'common',
+          'registration_only',
+          'kk',
+          'ssc',
+          'lmd',
+          'inventra',
+          'spectra',
+          'komprof',
+        ])
         .defaultTo('common')
       table.integer('activity_category').defaultTo(null)
       table.string('images', 255).nullable()

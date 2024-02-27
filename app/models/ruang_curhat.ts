@@ -17,7 +17,7 @@ export default class RuangCurhat extends BaseModel {
   declare publicUser: BelongsTo<typeof PublicUser>
 
   @column()
-  declare problemOwner: string
+  declare problemOwner: number
 
   @column()
   declare ownerName: string
@@ -43,7 +43,7 @@ export default class RuangCurhat extends BaseModel {
   declare adminUser: BelongsTo<typeof AdminUser>
 
   @column()
-  declare status: string
+  declare status: number
 
   @column()
   declare additionalNotes: string

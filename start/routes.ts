@@ -25,13 +25,12 @@ router
 
     router
       .group(() => {
-        router.post('', [UniversitiesController, 'store'])
-        router.put('/:id', [UniversitiesController, 'update'])
+        router.post('', [UniversitiesController, 'store']).use(middleware.auth())
+        router.put('/:id', [UniversitiesController, 'update']).use(middleware.auth())
         router.get('/:id', [UniversitiesController, 'show'])
         router.get('', [UniversitiesController, 'index'])
       })
       .prefix('universities')
-      .use(middleware.auth())
 
     router
       .group(() => {
@@ -50,6 +49,8 @@ router
         router.post('', [ActivitiesController, 'store'])
         router.put(':id/images', [ActivitiesController, 'uploadImage'])
         router.put(':id/delete-image', [ActivitiesController, 'deleteImage'])
+        router.get(':id/registrations', [ActivityRegistrationsController, 'index'])
+        router.get(':id/registrations-export/', [ActivityRegistrationsController, 'export'])
       })
       .prefix('activities')
       .use(middleware.auth())
@@ -58,8 +59,6 @@ router
       .group(() => {
         router.put('/:id', [ActivityRegistrationsController, 'updateStatus'])
         router.get('/:id', [ActivityRegistrationsController, 'show'])
-        router.get('', [ActivityRegistrationsController, 'index'])
-        router.get('export/:id', [ActivityRegistrationsController, 'export'])
       })
       .prefix('activity-registrations')
       .use(middleware.auth())
