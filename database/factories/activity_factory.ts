@@ -50,12 +50,12 @@ export const ActivityFactory = factory
         {
           type: 'text',
           label:
-            'Jika kamu sudah berinfaq/donasi untuk Masjid Salman ITB, silakan upload bukti transfernya di google drive, lalu taruh link-nya di sini ya! (Pastikan aksesnya sudah dibuka untuk memudahkan konfirmasi hihi)',
+            'Jika kamu sudah berinfaq/donasi untuk Masjid Salman ITB, silakan upload bukti transfernya di google drive, lalu taruh link-nya di sini ya!',
           name: 'text1664618698378',
           required: true,
         },
         {
-          type: 'option',
+          type: 'dropdown',
           label: 'Sudah menyalurkan kebaikan ini melalui apa nih?',
           name: 'text1664618817082',
           required: true,
@@ -75,16 +75,9 @@ export const ActivityFactory = factory
           ],
         },
         {
-          type: 'text',
-          label: 'Apa motivasimu mengikuti kegiatan ini?',
+          type: 'number',
+          label: 'Seberapa besar motivasimu mengikuti kegiatan ini?',
           name: 'text1664619435933',
-          required: true,
-        },
-        {
-          type: 'text',
-          label:
-            'Apakah sudah memiliki channel podcast sendiri? (Bisa disebutkan nama channel & medianya) ',
-          name: 'text1664619514471',
           required: true,
         },
       ]),

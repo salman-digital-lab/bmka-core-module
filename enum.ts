@@ -1,32 +1,31 @@
 export enum Level {
-  jamaah,
-  aktivis,
-  aktivis_kk,
-  kader,
-  kader_inventra,
-  kader_komprof,
-  kader_lanjut,
+  JAMAAH,
+  AKTIVIS,
+  AKTIVIS_KK,
+  KADER,
+  KADER_INVENTRA,
+  KADER_KOMPROF,
+  KADER_LANJUT,
 }
 
 export enum ActivityCategory {
-  pelatihan,
-  keasramaan,
-  kaderisasi,
-  aktualisasi_diri,
-  kealumnian,
+  PELATIHAN,
+  KEASRAMAAN,
+  KADERISASI,
+  AKTUALISASI_DIRI,
+  KEALUMNIAN,
 }
 
 // ruang curhat
 export enum ProblemOwner {
-  diri_sendiri,
-  teman,
+  DIRI_SENDIRI,
+  TEMAN,
 }
 
 // ruang curhat
 export enum Status {
-  belum_ditangani,
-  akan_ditangani,
-  sedang_ditangani,
-  sudah_ditangani,
-  gagal_ditangani,
+  BELUM_DITANGANI,
+  SEDANG_DITANGANI,
+  SUDAH_DITANGANI,
+  BATAL,
 }

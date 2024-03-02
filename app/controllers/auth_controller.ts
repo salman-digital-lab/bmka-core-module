@@ -1,7 +1,14 @@
 import { HttpContext } from '@adonisjs/core/http'
-import { registerValidator, loginValidator } from '#validators/auth_validator'
+import {
+  registerValidator,
+  loginValidator,
+  resetPasswordValidator,
+} from '#validators/auth_validator'
 import hash from '@adonisjs/core/services/hash'
 import AdminUser from '#models/admin_user'
+import encryption from '@adonisjs/core/services/encryption'
+import env from '#start/env'
+import mail from '@adonisjs/mail/services/main'
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
@@ -71,9 +78,46 @@ export default class AuthController {
         })
       }
 
-      // need to install & implement adonis mail here
+      const encrypted = encryption.encrypt(email, '30 minutes')
+      const resetUrl: string = env.get('RESET_PASSWORD_URL') + '?token=' + encrypted
+      const fromAddress: string = env.get('SMTP_USERNAME')
+
+      await mail.send((message) => {
+        message
+          .to(user.email)
+          .from(fromAddress, 'Kaderisasi Masjid Salman ITB')
+          .subject('Reset kata sandi akun Kaderisasi Masjid Salman ITB')
+          .htmlView('emails/reset_password', { resetUrl })
+      })
+
       return response.ok({
         message: 'SEND_EMAIL_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async resetPassword({ request, response }: HttpContext) {
+    const token: string = request.qs().token
+    const { password } = await resetPasswordValidator.validate(request.all())
+    try {
+      const decrypted = encryption.decrypt(token)
+      const user = await AdminUser.findBy('email', decrypted)
+
+      if (!user) {
+        return response.unauthorized({
+          message: 'INVALID_TOKEN',
+        })
+      }
+
+      await user.merge({ password: password }).save()
+
+      return response.ok({
+        message: 'RESET_PASSWORD_SUCCESS',
       })
     } catch (error) {
       return response.internalServerError({

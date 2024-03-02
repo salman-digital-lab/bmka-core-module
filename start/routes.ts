@@ -9,6 +9,7 @@ const UniversitiesController = () => import('#controllers/universities_controlle
 const RuangCurhatController = () => import('#controllers/ruang_curhats_controller')
 const ProvincesController = () => import('#controllers/provinces_controller')
 const CitiesController = () => import('#controllers/cities_controller')
+const DashboardController = () => import('#controllers/dashboard_controller')
 
 router.get('/', () => {
   return 'Hello world from the home page.'
@@ -22,6 +23,13 @@ router
         router.post('login', [AuthController, 'login'])
       })
       .prefix('auth')
+
+    router
+      .group(() => {
+        router.get('profiles', [DashboardController, 'CountProfiles'])
+      })
+      .prefix('dashboard')
+      .use(middleware.auth())
 
     router
       .group(() => {

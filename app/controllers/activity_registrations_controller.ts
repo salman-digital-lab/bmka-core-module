@@ -9,7 +9,7 @@ export default class ActivityRegistrationsController {
     const registrationId: number = params.id
     try {
       const registration = await ActivityRegistration.findOrFail(registrationId)
-
+      registration.questionnaireAnswer = JSON.parse(registration.questionnaireAnswer)
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
         data: registration,
