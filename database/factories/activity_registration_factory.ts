@@ -11,7 +11,13 @@ export const ActivityRegistrationFactory = factory
     return {
       user_id: publicUsers[Math.floor(Math.random() * (publicUsers.length - 1))].id,
       activity_id: activities[Math.floor(Math.random() * (activities.length - 1))].id,
-      status: faker.string.fromCharacters(['REGISTERED', 'JOINED', 'PASSED', 'FAILED', 'REJECTED']),
+      status: faker.string.fromCharacters([
+        'TERDAFTAR',
+        'DITERIMA',
+        'LULUS KEGIATAN',
+        'TIDAK LULUS',
+        'TIDAK DITERIMA',
+      ]),
     }
   })
   .build()

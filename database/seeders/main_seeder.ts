@@ -8,6 +8,9 @@ import { AdminUserFactory } from '#database/factories/admin_user_factory'
 import { ProfileFactory } from '#database/factories/profile_factory'
 import { ActivityRegistrationFactory } from '#database/factories/activity_registration_factory'
 import { RuangCurhatFactory } from '#database/factories/ruang_curhat_factory'
+import { RoleFactory } from '#database/factories/role_factory'
+import { PermissionFactory } from '#database/factories/permission_factory'
+import { RolesPermissionFactory } from '#database/factories/roles_permission_factory'
 
 export default class extends BaseSeeder {
   async run() {
@@ -24,5 +27,8 @@ export default class extends BaseSeeder {
 
     await ActivityRegistrationFactory.createMany(10)
     await RuangCurhatFactory.createMany(10)
+    await PermissionFactory.createMany(5)
+    await RoleFactory.createMany(5)
+    await RolesPermissionFactory.createMany(10)
   }
 }

@@ -10,6 +10,9 @@ const RuangCurhatController = () => import('#controllers/ruang_curhats_controlle
 const ProvincesController = () => import('#controllers/provinces_controller')
 const CitiesController = () => import('#controllers/cities_controller')
 const DashboardController = () => import('#controllers/dashboard_controller')
+const RolesController = () => import('#controllers/roles_controller')
+const PermissionsController = () => import('#controllers/permissions_controller')
+const RolesPermissionsController = () => import('#controllers/roles_permissions_controller')
 
 router.get('/', () => {
   return 'Hello world from the home page.'
@@ -26,7 +29,39 @@ router
 
     router
       .group(() => {
+        router.get('', [RolesController, 'index'])
+        router.get(':id', [RolesController, 'show'])
+        router.post('', [RolesController, 'store'])
+        router.put('', [RolesController, 'update'])
+        router.get(':id/permissions', [RolesPermissionsController, 'permissionsByRole'])
+      })
+      .prefix('roles')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.get('', [PermissionsController, 'index'])
+        router.get(':id', [PermissionsController, 'show'])
+        router.post('', [PermissionsController, 'store'])
+        router.put('', [PermissionsController, 'update'])
+      })
+      .prefix('permissions')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.get('', [RolesPermissionsController, 'index'])
+        router.get(':id', [RolesPermissionsController, 'show'])
+        router.post('', [RolesPermissionsController, 'store'])
+        router.put('', [RolesPermissionsController, 'update'])
+      })
+      .prefix('roles-permissions')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
         router.get('profiles', [DashboardController, 'CountProfiles'])
+        router.get('gender', [DashboardController, 'CountUsersGender'])
       })
       .prefix('dashboard')
       .use(middleware.auth())
