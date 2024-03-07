@@ -18,6 +18,9 @@ export default class extends BaseSeeder {
     await ProvinceFactory.createMany(10)
     await CityFactory.createMany(15)
     await ActivityFactory.createMany(25)
+    await PermissionFactory.createMany(5)
+    await RoleFactory.createMany(5)
+    await RolesPermissionFactory.createMany(10)
     await AdminUserFactory.createMany(10)
 
     for (var i: number = 1; i <= 10; i++) {
@@ -27,8 +30,5 @@ export default class extends BaseSeeder {
 
     await ActivityRegistrationFactory.createMany(10)
     await RuangCurhatFactory.createMany(10)
-    await PermissionFactory.createMany(5)
-    await RoleFactory.createMany(5)
-    await RolesPermissionFactory.createMany(10)
   }
 }
