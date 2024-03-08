@@ -77,4 +77,25 @@ export default class RolesController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const role = await Role.find('id', id)
+      if (!role) {
+        return response.ok({
+          message: 'ROLE_NOT_FOUND',
+        })
+      }
+      await Role.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }

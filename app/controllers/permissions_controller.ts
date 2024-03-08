@@ -77,4 +77,25 @@ export default class PermissionsController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const permission = await Permission.find('id', id)
+      if (!permission) {
+        return response.ok({
+          message: 'ROLE_NOT_FOUND',
+        })
+      }
+      await Permission.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }
