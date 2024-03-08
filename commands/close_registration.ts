@@ -1,6 +1,8 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import Activity from '#models/activity'
+import { DateTime } from 'luxon'
+import logger from '@adonisjs/core/services/logger'
 
 export default class CloseRegistration extends BaseCommand {
   static commandName = 'close:registration'
@@ -9,32 +11,15 @@ export default class CloseRegistration extends BaseCommand {
   static options: CommandOptions = {}
 
   async run() {
-    var : string[] = []
     try {
-      // get activities with status = OPENED
       var activities = await Activity.query()
-        .select('id', 'registration_end')
         .where({ is_published: 1 })
+        .where('registration_end', '<', DateTime.local().toSQLDate())
+        .update({ is_published: 0 }, ['id', 'slug'])
 
-      activities = activities.toJSON()
-      if (activities[0] != undefined) {
-        // get the slugs of OPENED activities that should be closed on current date
-        activities.forEach((element) => {
-          var registerEndDate = Date.parse(element.register_end_date)
-          var todayDate = new Date().setHours(0, 0, 0, 0)
-
-          if (todayDate > registerEndDate) {
-            slugContainers.push(element.slug)
-          }
-        })
-
-        // update the status as CLOSED
-        for (let i = 0; i < slugContainers.length; i++) {
-          await Activity.query().where('slug', slugContainers[i]).update({ status: 'CLOSED' })
-        }
-      }
+      logger.info(activities)
     } catch (error) {
-      console.log(error.message)
+      logger.error(error.message)
     }
   }
 }
