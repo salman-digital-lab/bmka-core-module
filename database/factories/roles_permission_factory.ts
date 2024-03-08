@@ -4,7 +4,8 @@ import Role from '#models/role'
 import Permission from '#models/permission'
 
 export const RolesPermissionFactory = factory
-  .define(RolesPermission, async ({ faker }) => {
+  // @ts-expect-error the return value type is making the error
+  .define(RolesPermission, async () => {
     const roles = await Role.query().select('id')
     const permission = await Permission.query().select('id')
     return {
