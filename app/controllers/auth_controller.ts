@@ -45,7 +45,13 @@ export default class AuthController {
     try {
       const email: string = payload.email
       const password: string = payload.password
-      const user = await AdminUser.query().where('email', email).firstOrFail()
+      const user = await AdminUser.query().where('email', email).first()
+
+      if (!user) {
+        return response.notFound({
+          message: 'USER_NOT_FOUND',
+        })
+      }
 
       if (!(await hash.verify(user.password, password))) {
         return response.unauthorized({
