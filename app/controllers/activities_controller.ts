@@ -1,7 +1,11 @@
 import { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import Activity from '#models/activity'
-import { activityValidator, imageValidator } from '#validators/activity_validator'
+import {
+  activityValidator,
+  updateActivityValidator,
+  imageValidator,
+} from '#validators/activity_validator'
 import { DateTime } from 'luxon'
 import { unlink } from 'node:fs/promises'
 
@@ -12,12 +16,11 @@ export default class ActivitiesController {
       const perPage = request.qs().per_page ?? 10
       const search = request.qs().search
 
-      type Clause = {
-        activity_category: number
-        minimum_level: number
-      }
-
-      const clause = <Clause>{}
+      const clause: {
+        activity_category?: number
+        minimum_level?: number
+        activity_type?: number
+      } = {}
 
       if (request.qs().category) {
         clause.activity_category = request.qs().category
@@ -25,6 +28,10 @@ export default class ActivitiesController {
 
       if (request.qs().minimumLevel) {
         clause.minimum_level = request.qs().minimumLevel
+      }
+
+      if (request.qs().activity_type) {
+        clause.activity_type = request.qs().activity_type
       }
 
       const activities = await Activity.query()
@@ -145,12 +152,22 @@ export default class ActivitiesController {
     try {
       const activityData = await Activity.create({
         ...payload,
-        activityStart: DateTime.fromJSDate(payload.activity_start),
-        activityEnd: DateTime.fromJSDate(payload.activity_end),
-        registrationStart: DateTime.fromJSDate(payload.registration_start),
-        registrationEnd: DateTime.fromJSDate(payload.registration_end),
-        selectionStart: DateTime.fromJSDate(payload.selection_start),
-        selectionEnd: DateTime.fromJSDate(payload.selection_end),
+        activityStart: payload.activity_start
+          ? DateTime.fromJSDate(payload.activity_start)
+          : undefined,
+        activityEnd: payload.activity_end ? DateTime.fromJSDate(payload.activity_end) : undefined,
+        registrationStart: payload.registration_start
+          ? DateTime.fromJSDate(payload.registration_start)
+          : undefined,
+        registrationEnd: payload.registration_end
+          ? DateTime.fromJSDate(payload.registration_end)
+          : undefined,
+        selectionStart: payload.selection_start
+          ? DateTime.fromJSDate(payload.selection_start)
+          : undefined,
+        selectionEnd: payload.selection_end
+          ? DateTime.fromJSDate(payload.selection_end)
+          : undefined,
       })
 
       return response.ok({
@@ -166,12 +183,31 @@ export default class ActivitiesController {
   }
 
   async update({ params, request, response }: HttpContext) {
-    const payload = await activityValidator.validate(request.all())
-
+    const payload = await updateActivityValidator.validate(request.all())
     try {
       const id: number = params.id
       const activityData = await Activity.findOrFail(id)
-      const updated = await activityData.merge(payload).save()
+      const updated = await activityData
+        .merge({
+          ...payload,
+          activityStart: payload.activity_start
+            ? DateTime.fromJSDate(payload.activity_start)
+            : undefined,
+          activityEnd: payload.activity_end ? DateTime.fromJSDate(payload.activity_end) : undefined,
+          registrationStart: payload.registration_start
+            ? DateTime.fromJSDate(payload.registration_start)
+            : undefined,
+          registrationEnd: payload.registration_end
+            ? DateTime.fromJSDate(payload.registration_end)
+            : undefined,
+          selectionStart: payload.selection_start
+            ? DateTime.fromJSDate(payload.selection_start)
+            : undefined,
+          selectionEnd: payload.selection_end
+            ? DateTime.fromJSDate(payload.selection_end)
+            : undefined,
+        })
+        .save()
 
       return response.ok({
         message: 'UPDATE_DATA_SUCCESS',
