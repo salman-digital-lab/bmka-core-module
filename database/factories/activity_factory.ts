@@ -52,14 +52,17 @@ export const ActivityFactory = factory
           required: true,
           data: [
             {
+              id: 1,
               label: 'Share poster ke 3 WA Grup',
               value: 'share poster ke 3 wa grup',
             },
             {
+              id: 2,
               label: 'Mention minimal 5 akun bestienya di postingan IG',
               value: 'mention minimal 5 akun bestienya di postingan ig',
             },
             {
+              id: 3,
               label: 'Ngajak sebanyak-banyak bestienya buat ikutan juga',
               value: 'ngajak sebanyak-banyak bestienya buat ikutan juga',
             },

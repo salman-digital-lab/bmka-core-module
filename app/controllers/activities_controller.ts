@@ -41,11 +41,6 @@ export default class ActivitiesController {
         .orderBy('id', 'desc')
         .paginate(page, perPage)
 
-      activities.map((item) => {
-        item.additionalConfig = JSON.parse(item.additionalConfig)
-        item.additionalQuestionnaire = JSON.parse(item.additionalQuestionnaire)
-      })
-
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
         data: activities,
