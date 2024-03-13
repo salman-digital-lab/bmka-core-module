@@ -30,7 +30,7 @@ export const ActivityFactory = factory
       selection_start: today,
       selection_end: today.plus({ days: 6 }),
       minimum_level: faker.number.int({ min: 0, max: 6 }),
-      activity_type: faker.number.int({ min: 0, max: 11 }),
+      activity_type: faker.number.int({ min: 0, max: 7 }),
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: faker.number.int({ min: 0, max: 1 }),
       additionalConfig: JSON.stringify({
