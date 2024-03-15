@@ -18,6 +18,11 @@ export const ActivityRegistrationFactory = factory
         'TIDAK LULUS',
         'TIDAK DITERIMA',
       ]),
+      questionnaireAnswer: JSON.stringify({
+        '0': 'google.drive.com/kdbhjehdbH',
+        '1': 'share poster ke 3 wa grup',
+        '2': 'Cukup besar',
+      }),
     }
   })
   .build()

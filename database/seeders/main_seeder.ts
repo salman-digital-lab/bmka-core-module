@@ -28,7 +28,7 @@ export default class extends BaseSeeder {
       await ProfileFactory.merge({ userId: user.id }).create()
     }
 
-    await ActivityRegistrationFactory.createMany(10)
+    await ActivityRegistrationFactory.createMany(50)
     await RuangCurhatFactory.createMany(10)
   }
 }

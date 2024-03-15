@@ -3,6 +3,7 @@ import ActivityRegistration from '#models/activity_registration'
 import Activity from '#models/activity'
 import Excel from 'exceljs'
 import Profile from '#models/profile'
+import db from '@adonisjs/lucid/services/db'
 
 export default class ActivityRegistrationsController {
   async show({ params, response }: HttpContext) {
@@ -10,6 +11,7 @@ export default class ActivityRegistrationsController {
     try {
       const registration = await ActivityRegistration.findOrFail(registrationId)
       registration.questionnaireAnswer = JSON.parse(registration.questionnaireAnswer)
+
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
         data: registration,
@@ -27,9 +29,24 @@ export default class ActivityRegistrationsController {
     const page = request.qs().page ?? 1
     const perPage = request.qs().per_page ?? 10
     try {
-      const registrations = await ActivityRegistration.query()
-        .where('activity_id', activityId)
-        .orderBy('id', 'desc')
+      const registrations = await db
+        .from('activity_registrations')
+        .join('public_users', 'activity_registrations.user_id', '=', 'public_users.id')
+        .join('profiles', 'activity_registrations.user_id', '=', 'profiles.user_id')
+        .join('universities', 'profiles.university_id', '=', 'universities.id')
+        .where('activity_registrations.activity_id', activityId)
+        .select(
+          'activity_registrations.id',
+          'public_users.id as user_id',
+          'profiles.name',
+          'profiles.gender',
+          'profiles.level',
+          'profiles.whatsapp',
+          'public_users.email',
+          'universities.name as university',
+          'activity_registrations.status'
+        )
+        .orderBy('activity_registrations.id', 'desc')
         .paginate(page, perPage)
 
       return response.ok({

@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer('user_id').references('id').inTable('public_users').onDelete('CASCADE')
       table.integer('activity_id').references('id').inTable('activities').onDelete('CASCADE')
       table.string('status', 50)
-      table.text('questionnaire_answer', 'longtext').defaultTo('[]')
+      table.text('questionnaire_answer', 'longtext').defaultTo('{}')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
