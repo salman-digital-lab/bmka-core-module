@@ -96,13 +96,14 @@ router
         router.put(':id/delete-image', [ActivitiesController, 'deleteImage'])
         router.get(':id/registrations', [ActivityRegistrationsController, 'index'])
         router.get(':id/registrations-export/', [ActivityRegistrationsController, 'export'])
+        router.put(':id/registrations', [ActivityRegistrationsController, 'updateStatusBulk'])
       })
       .prefix('activities')
       .use(middleware.auth())
 
     router
       .group(() => {
-        router.put('/:id', [ActivityRegistrationsController, 'updateStatus'])
+        router.put('', [ActivityRegistrationsController, 'updateStatus'])
         router.get('/:id', [ActivityRegistrationsController, 'show'])
       })
       .prefix('activity-registrations')

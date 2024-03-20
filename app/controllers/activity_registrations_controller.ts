@@ -4,6 +4,10 @@ import Activity from '#models/activity'
 import Excel from 'exceljs'
 import Profile from '#models/profile'
 import db from '@adonisjs/lucid/services/db'
+import {
+  updateActivityRegistrations,
+  bulkUpdateActivityRegistrations,
+} from '#validators/activity_validator'
 
 export default class ActivityRegistrationsController {
   async show({ params, response }: HttpContext) {
@@ -28,23 +32,8 @@ export default class ActivityRegistrationsController {
     const activityId = params.id
     const page = request.qs().page ?? 1
     const perPage = request.qs().per_page ?? 10
-
-    const profiles: {
-      name?: string
-    } = {}
-
-    if (request.qs().name) {
-      profiles.name = request.qs().name
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const activity_registrations: {
-      status?: string
-    } = {}
-
-    if (request.qs().status) {
-      activity_registrations.status = request.qs().status
-    }
+    const name = request.qs().name
+    const status = request.qs().status
 
     try {
       const activity = await Activity.findOrFail(activityId)
@@ -58,9 +47,9 @@ export default class ActivityRegistrationsController {
         .from('activity_registrations')
         .join('public_users', 'activity_registrations.user_id', '=', 'public_users.id')
         .join('profiles', 'activity_registrations.user_id', '=', 'profiles.user_id')
-        .where(profiles)
-        .where(activity_registrations)
         .where('activity_registrations.activity_id', activityId)
+        .where('profiles.name', 'ILIKE', name ? '%' + name + '%' : '%%')
+        .where('activity_registrations.status', 'ILIKE', status ? '%' + status + '%' : '%%')
         .select(
           'activity_registrations.id',
           'public_users.id as user_id',
@@ -83,15 +72,37 @@ export default class ActivityRegistrationsController {
     }
   }
 
-  async updateStatus({ request, params, response }: HttpContext) {
-    const registrationId: number = params.id
-    const payload = request.all()
+  async updateStatus({ request, response }: HttpContext) {
+    const payload = await updateActivityRegistrations.validate(request.all())
+    const status: string = payload.status
+    const ids: number[] = payload.registrations_id
     try {
-      const registration = await ActivityRegistration.findOrFail(registrationId)
-      await registration.merge({ status: payload.status }).save()
+      const affectedRows = await ActivityRegistration.query()
+        .whereIn('id', ids)
+        .update({ status: status })
       return response.ok({
         messages: 'UPDATE_DATA_SUCCESS',
-        data: registration,
+        affected_rows: affectedRows,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async updateStatusBulk({ params, request, response }: HttpContext) {
+    const activityId = params.id
+    const payload = await bulkUpdateActivityRegistrations.validate(request.all())
+    try {
+      const affectedRows = await ActivityRegistration.query()
+        .where('activity_id', activityId)
+        .where('status', payload.current_status)
+        .update({ status: payload.new_status })
+      return response.ok({
+        messages: 'UPDATE_DATA_SUCCESS',
+        affected_rows: affectedRows,
       })
     } catch (error) {
       return response.internalServerError({

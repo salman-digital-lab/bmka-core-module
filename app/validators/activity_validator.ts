@@ -58,3 +58,17 @@ export const imageValidator = vine.compile(
     }),
   })
 )
+
+export const updateActivityRegistrations = vine.compile(
+  vine.object({
+    status: vine.string(),
+    registrations_id: vine.array(vine.number()),
+  })
+)
+
+export const bulkUpdateActivityRegistrations = vine.compile(
+  vine.object({
+    current_status: vine.string(),
+    new_status: vine.string(),
+  })
+)
