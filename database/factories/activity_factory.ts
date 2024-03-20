@@ -35,7 +35,7 @@ export const ActivityFactory = factory
       is_published: faker.number.int({ min: 0, max: 1 }),
       additionalConfig: JSON.stringify({
         custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
-        mandatory_profile_data: ['whatsapp', 'province', 'city'],
+        mandatory_profile_data: ['whatsapp', 'province_id', 'university_id', 'name'],
       }),
       additionalQuestionnaire: JSON.stringify([
         {

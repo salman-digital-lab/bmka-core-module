@@ -28,23 +28,45 @@ export default class ActivityRegistrationsController {
     const activityId = params.id
     const page = request.qs().page ?? 1
     const perPage = request.qs().per_page ?? 10
+
+    const profiles: {
+      name?: string
+    } = {}
+
+    if (request.qs().name) {
+      profiles.name = request.qs().name
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const activity_registrations: {
+      status?: string
+    } = {}
+
+    if (request.qs().status) {
+      activity_registrations.status = request.qs().status
+    }
+
     try {
+      const activity = await Activity.findOrFail(activityId)
+      const config = JSON.parse(activity.additionalConfig)
+      const mandatoryData: string[] = config.mandatory_profile_data
+      mandatoryData.map((element) => {
+        element = 'profiles.' + element
+      })
+
       const registrations = await db
         .from('activity_registrations')
         .join('public_users', 'activity_registrations.user_id', '=', 'public_users.id')
         .join('profiles', 'activity_registrations.user_id', '=', 'profiles.user_id')
-        .join('universities', 'profiles.university_id', '=', 'universities.id')
+        .where(profiles)
+        .where(activity_registrations)
         .where('activity_registrations.activity_id', activityId)
         .select(
           'activity_registrations.id',
           'public_users.id as user_id',
-          'profiles.name',
-          'profiles.gender',
-          'profiles.level',
-          'profiles.whatsapp',
           'public_users.email',
-          'universities.name as university',
-          'activity_registrations.status'
+          'activity_registrations.status',
+          ...mandatoryData
         )
         .orderBy('activity_registrations.id', 'desc')
         .paginate(page, perPage)

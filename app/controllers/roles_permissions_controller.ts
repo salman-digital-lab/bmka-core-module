@@ -51,10 +51,7 @@ export default class RolesPermissionsController {
   async permissionsByRole({ params, response }: HttpContext) {
     try {
       const id: number = params.id
-      const relations = await RolePermission.query()
-        .where({ role_id: id })
-        .preload('role')
-        .preload('permission')
+      const relations = await RolePermission.query().where({ role_id: id }).preload('permission')
 
       return response.ok({
         message: 'GET_DATA_SUCCESS',
