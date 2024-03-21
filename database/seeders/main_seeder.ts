@@ -4,7 +4,7 @@ import { ProvinceFactory } from '#database/factories/province_factory'
 import { CityFactory } from '#database/factories/city_factory'
 import { ActivityFactory } from '#database/factories/activity_factory'
 import { PublicUserFactory } from '#database/factories/public_user_factory'
-import { AdminUserFactory } from '#database/factories/admin_user_factory'
+import { AdminUserFactory, RealAdminUserFactory } from '#database/factories/admin_user_factory'
 import { ProfileFactory } from '#database/factories/profile_factory'
 import { ActivityRegistrationFactory } from '#database/factories/activity_registration_factory'
 import { RuangCurhatFactory } from '#database/factories/ruang_curhat_factory'
@@ -30,5 +30,8 @@ export default class extends BaseSeeder {
 
     await ActivityRegistrationFactory.createMany(50)
     await RuangCurhatFactory.createMany(10)
+
+    // Real Data Seeder
+    await RealAdminUserFactory.create()
   }
 }
