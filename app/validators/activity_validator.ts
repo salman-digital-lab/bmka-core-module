@@ -68,7 +68,8 @@ export const updateActivityRegistrations = vine.compile(
 
 export const bulkUpdateActivityRegistrations = vine.compile(
   vine.object({
-    current_status: vine.string(),
+    name: vine.string().optional(),
+    current_status: vine.string().optional(),
     new_status: vine.string(),
   })
 )

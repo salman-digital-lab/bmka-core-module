@@ -20,6 +20,7 @@ export default class ActivitiesController {
         activity_category?: number
         minimum_level?: number
         activity_type?: number
+        is_published?: number
       } = {}
 
       if (request.qs().category) {
@@ -32,6 +33,10 @@ export default class ActivitiesController {
 
       if (request.qs().activity_type) {
         clause.activity_type = request.qs().activity_type
+      }
+
+      if (request.qs().is_published) {
+        clause.is_published = request.qs().is_published
       }
 
       const activities = await Activity.query()

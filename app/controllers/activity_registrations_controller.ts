@@ -95,10 +95,18 @@ export default class ActivityRegistrationsController {
   async updateStatusBulk({ params, request, response }: HttpContext) {
     const activityId = params.id
     const payload = await bulkUpdateActivityRegistrations.validate(request.all())
+    const clause: {
+      name?: string
+      status?: string
+    } = {}
+
+    if (payload.name) clause.name = payload.name
+    if (payload.current_status) clause.status = payload.current_status
+
     try {
       const affectedRows = await ActivityRegistration.query()
         .where('activity_id', activityId)
-        .where('status', payload.current_status)
+        .where(clause)
         .update({ status: payload.new_status })
       return response.ok({
         messages: 'UPDATE_DATA_SUCCESS',
