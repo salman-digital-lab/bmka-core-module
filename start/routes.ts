@@ -126,17 +126,21 @@ router
     router
       .group(() => {
         router.get('', [ProvincesController, 'index'])
+        router.get(':id', [ProvincesController, 'show'])
         router.get(':id/cities', [CitiesController, 'getByProvinceId'])
         router.post('', [ProvincesController, 'store']).use(middleware.auth())
         router.put(':id', [ProvincesController, 'update']).use(middleware.auth())
+        router.delete(':id', [ProvincesController, 'delete']).use(middleware.auth())
       })
       .prefix('provinces')
 
     router
       .group(() => {
         router.get('', [CitiesController, 'index'])
+        router.get(':id', [CitiesController, 'show'])
         router.post('', [CitiesController, 'store']).use(middleware.auth())
         router.put(':id', [CitiesController, 'update']).use(middleware.auth())
+        router.delete(':id', [CitiesController, 'delete']).use(middleware.auth())
       })
       .prefix('cities')
   })

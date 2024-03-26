@@ -83,7 +83,7 @@ export default class UniversitiesController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const university = await University.find('id', id)
+      const university = await University.find(id)
       if (!university) {
         return response.ok({
           message: 'UNIVERSITY_NOT_FOUND',

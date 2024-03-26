@@ -54,10 +54,10 @@ export default class ActivityRegistrationsController {
           'activity_registrations.id',
           'public_users.id as user_id',
           'public_users.email',
-          'activity_registrations.status',
           'profiles.name',
           'profiles.level',
-          ...mandatoryData
+          ...mandatoryData,
+          'activity_registrations.status'
         )
         .orderBy('activity_registrations.id', 'desc')
         .paginate(page, perPage)
@@ -250,7 +250,7 @@ export default class ActivityRegistrationsController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const registration = await ActivityRegistration.find('id', id)
+      const registration = await ActivityRegistration.find(id)
       if (!registration) {
         return response.ok({
           message: 'REGISTRATION_NOT_FOUND',

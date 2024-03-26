@@ -19,6 +19,23 @@ export default class ProvincesController {
     }
   }
 
+  async show({ params, response }: HttpContext) {
+    try {
+      const id: number = params.id
+      const city = await City.findOrFail(id)
+
+      return response.ok({
+        message: 'GET_DATA_SUCCESS',
+        data: city,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
   async getByProvinceId({ params, response }: HttpContext) {
     const provinceId: number = params.id
     try {
@@ -75,7 +92,7 @@ export default class ProvincesController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const city = await City.find('id', id)
+      const city = await City.find(id)
       if (!city) {
         return response.ok({
           message: 'CITY_NOT_FOUND',

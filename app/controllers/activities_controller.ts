@@ -228,7 +228,7 @@ export default class ActivitiesController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const activity = await Activity.find('id', id)
+      const activity = await Activity.find(id)
       if (!activity) {
         return response.ok({
           message: 'ACTIVITY_NOT_FOUND',

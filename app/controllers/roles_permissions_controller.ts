@@ -109,7 +109,7 @@ export default class RolesPermissionsController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const rolePermission = await RolePermission.find('id', id)
+      const rolePermission = await RolePermission.find(id)
       if (!rolePermission) {
         return response.ok({
           message: 'ROLE_PERMISSION_NOT_FOUND',

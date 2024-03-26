@@ -81,7 +81,7 @@ export default class RolesController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const role = await Role.find('id', id)
+      const role = await Role.find(id)
       if (!role) {
         return response.ok({
           message: 'ROLE_NOT_FOUND',

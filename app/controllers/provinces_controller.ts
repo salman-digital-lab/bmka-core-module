@@ -19,6 +19,23 @@ export default class ProvincesController {
     }
   }
 
+  async show({ params, response }: HttpContext) {
+    try {
+      const id: number = params.id
+      const province = await Province.findOrFail(id)
+
+      return response.ok({
+        message: 'GET_DATA_SUCCESS',
+        data: province,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
   async store({ request, response }: HttpContext) {
     const { name } = await provinceValidator.validate(request.all())
     try {
@@ -58,7 +75,7 @@ export default class ProvincesController {
   async delete({ params, response }: HttpContext) {
     const id = params.id
     try {
-      const province = await Province.find('id', id)
+      const province = await Province.find(id)
       if (!province) {
         return response.ok({
           message: 'PROVINCE_NOT_FOUND',
