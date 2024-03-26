@@ -105,4 +105,25 @@ export default class RolesPermissionsController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const rolePermission = await RolePermission.find('id', id)
+      if (!rolePermission) {
+        return response.ok({
+          message: 'ROLE_PERMISSION_NOT_FOUND',
+        })
+      }
+      await RolePermission.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }

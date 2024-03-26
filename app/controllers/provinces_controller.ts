@@ -54,4 +54,25 @@ export default class ProvincesController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const province = await Province.find('id', id)
+      if (!province) {
+        return response.ok({
+          message: 'PROVINCE_NOT_FOUND',
+        })
+      }
+      await Province.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }

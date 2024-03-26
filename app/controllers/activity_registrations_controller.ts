@@ -55,6 +55,8 @@ export default class ActivityRegistrationsController {
           'public_users.id as user_id',
           'public_users.email',
           'activity_registrations.status',
+          'profiles.name',
+          'profiles.level',
           ...mandatoryData
         )
         .orderBy('activity_registrations.id', 'desc')
@@ -237,6 +239,27 @@ export default class ActivityRegistrationsController {
           `attachment; filename=${activity.name.replace(/ /g, '-')}.xls`
         )
         .send(buffer)
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const registration = await ActivityRegistration.find('id', id)
+      if (!registration) {
+        return response.ok({
+          message: 'REGISTRATION_NOT_FOUND',
+        })
+      }
+      await ActivityRegistration.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
     } catch (error) {
       return response.internalServerError({
         message: 'GENERAL_ERROR',

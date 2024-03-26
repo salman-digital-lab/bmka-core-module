@@ -12,6 +12,7 @@ export default class DeleteExpiredToken extends BaseCommand {
     const today = new Date()
     let isoDate = today.toISOString()
     let dateString = isoDate.substring(0, 10)
-    db.from('public_users').where('expires_at', '<', dateString)
+    db.from('public_auth_access_tokens').where('expires_at', '<', dateString).delete()
+    db.from('admin_auth_access_tokens').where('expires_at', '<', dateString).delete()
   }
 }

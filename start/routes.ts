@@ -57,6 +57,7 @@ router
         router.get(':id', [RolesPermissionsController, 'show'])
         router.post('', [RolesPermissionsController, 'store'])
         router.put('', [RolesPermissionsController, 'update'])
+        router.delete(':id', [RolesPermissionsController, 'delete'])
       })
       .prefix('roles-permissions')
       .use(middleware.auth())
@@ -75,6 +76,7 @@ router
         router.put('/:id', [UniversitiesController, 'update']).use(middleware.auth())
         router.get('/:id', [UniversitiesController, 'show'])
         router.get('', [UniversitiesController, 'index'])
+        router.delete(':id', [UniversitiesController, 'delete'])
       })
       .prefix('universities')
 
@@ -83,6 +85,7 @@ router
         router.put('/:id', [ProfilesController, 'update'])
         router.get('/:id', [ProfilesController, 'show'])
         router.get('', [ProfilesController, 'index'])
+        router.delete(':id', [ProfilesController, 'delete'])
       })
       .prefix('profiles')
       .use(middleware.auth())
@@ -106,6 +109,7 @@ router
       .group(() => {
         router.put('', [ActivityRegistrationsController, 'updateStatus'])
         router.get('/:id', [ActivityRegistrationsController, 'show'])
+        router.delete(':id', [ActivityRegistrationsController, 'delete'])
       })
       .prefix('activity-registrations')
       .use(middleware.auth())
@@ -123,12 +127,16 @@ router
       .group(() => {
         router.get('', [ProvincesController, 'index'])
         router.get(':id/cities', [CitiesController, 'getByProvinceId'])
+        router.post('', [ProvincesController, 'store']).use(middleware.auth())
+        router.put(':id', [ProvincesController, 'update']).use(middleware.auth())
       })
       .prefix('provinces')
 
     router
       .group(() => {
         router.get('', [CitiesController, 'index'])
+        router.post('', [CitiesController, 'store']).use(middleware.auth())
+        router.put(':id', [CitiesController, 'update']).use(middleware.auth())
       })
       .prefix('cities')
   })

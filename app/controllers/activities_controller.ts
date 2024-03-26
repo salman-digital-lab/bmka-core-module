@@ -23,21 +23,13 @@ export default class ActivitiesController {
         is_published?: number
       } = {}
 
-      if (request.qs().category) {
-        clause.activity_category = request.qs().category
-      }
+      if (request.qs().category) clause.activity_category = request.qs().category
 
-      if (request.qs().minimumLevel) {
-        clause.minimum_level = request.qs().minimumLevel
-      }
+      if (request.qs().minimumLevel) clause.minimum_level = request.qs().minimumLevel
 
-      if (request.qs().activity_type) {
-        clause.activity_type = request.qs().activity_type
-      }
+      if (request.qs().activity_type) clause.activity_type = request.qs().activity_type
 
-      if (request.qs().is_published) {
-        clause.is_published = request.qs().is_published
-      }
+      if (request.qs().is_published) clause.is_published = request.qs().is_published
 
       const activities = await Activity.query()
         .where(clause)
@@ -224,6 +216,27 @@ export default class ActivitiesController {
       return response.ok({
         message: 'UPDATE_DATA_SUCCESS',
         data: updated,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const activity = await Activity.find('id', id)
+      if (!activity) {
+        return response.ok({
+          message: 'ACTIVITY_NOT_FOUND',
+        })
+      }
+      await Activity.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
       })
     } catch (error) {
       return response.internalServerError({

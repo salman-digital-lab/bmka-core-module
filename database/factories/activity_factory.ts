@@ -23,7 +23,7 @@ export const ActivityFactory = factory
       is_published: 1,
       additionalConfig: JSON.stringify({
         custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
-        mandatory_profile_data: ['whatsapp', 'province_id', 'university_id', 'name'],
+        mandatory_profile_data: ['whatsapp', 'province_id', 'university_id'],
       }),
       additionalQuestionnaire: JSON.stringify([
         {

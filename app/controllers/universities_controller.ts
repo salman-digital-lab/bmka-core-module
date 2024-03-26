@@ -79,4 +79,25 @@ export default class UniversitiesController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const university = await University.find('id', id)
+      if (!university) {
+        return response.ok({
+          message: 'UNIVERSITY_NOT_FOUND',
+        })
+      }
+      await University.query().where('id', id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }
