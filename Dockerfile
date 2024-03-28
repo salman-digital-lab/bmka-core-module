@@ -73,7 +73,7 @@ ENV SESSION_DRIVER=cookie
 COPY --chown=node:node --from=build /home/node/app/build .
 
 # We run NPM CI to install the exact versions of dependencies
-RUN npm ci --omit="dev"
+RUN npm ci --omit="dev" --ignore-scripts
 
 # Expose port
 EXPOSE 3334
