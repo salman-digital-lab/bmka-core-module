@@ -33,16 +33,22 @@ export default class Activity extends BaseModel {
   declare selectionEnd: DateTime
 
   @column()
-  declare minimumRole: number
+  declare minimumLevel: number
 
   @column()
-  declare activityType: string
+  declare activityType: number
+
+  @column()
+  declare activityCategory: number
 
   @column()
   declare additionalQuestionnaire: string
 
   @column()
   declare additionalConfig: string
+
+  @column()
+  declare images: string
 
   @column()
   declare isPublished: boolean

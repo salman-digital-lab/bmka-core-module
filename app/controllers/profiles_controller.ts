@@ -69,4 +69,25 @@ export default class ProfilesController {
       })
     }
   }
+
+  async delete({ params, response }: HttpContext) {
+    const id = params.id
+    try {
+      const profile = await Profile.findBy('user_id', id)
+      if (!profile) {
+        return response.ok({
+          message: 'PROFILE_NOT_FOUND',
+        })
+      }
+      await Profile.query().where('id', profile.id).delete()
+      return response.ok({
+        message: 'DELETE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
 }
