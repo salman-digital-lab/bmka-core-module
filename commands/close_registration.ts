@@ -8,7 +8,9 @@ export default class CloseRegistration extends BaseCommand {
   static commandName = 'close:registration'
   static description = 'Set activity is_published as 0'
 
-  static options: CommandOptions = {}
+  static options: CommandOptions = {
+    startApp: true,
+  }
 
   async run() {
     try {

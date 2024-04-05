@@ -6,7 +6,9 @@ export default class DeleteExpiredToken extends BaseCommand {
   static commandName = 'delete:expired-token'
   static description = 'delete expired token'
 
-  static options: CommandOptions = {}
+  static options: CommandOptions = {
+    startApp: true,
+  }
 
   async run() {
     const today = new Date()
