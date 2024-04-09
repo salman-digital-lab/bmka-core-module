@@ -16,8 +16,12 @@ export const ProfileFactory = factory
       name: name,
       gender: faker.string.fromCharacters(['F', 'M']),
       whatsapp: '62' + faker.string.numeric(11),
+      personal_id: faker.string.numeric(15),
       line: username[0],
       instagram: username[1],
+      tiktok: username[1],
+      linkedin: username[1],
+
       province_id: provinces[Math.floor(Math.random() * (provinces.length - 1))].id,
       city_id: cities[Math.floor(Math.random() * (cities.length - 1))].id,
       university_id: universities[Math.floor(Math.random() * (universities.length - 1))].id,

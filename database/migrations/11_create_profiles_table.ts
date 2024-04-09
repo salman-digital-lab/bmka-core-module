@@ -9,9 +9,14 @@ export default class extends BaseSchema {
       table.integer('user_id').references('id').inTable('public_users').onDelete('CASCADE')
       table.string('name', 50).notNullable()
       table.enu('gender', ['M', 'F'])
+      table.string('personal_id', 50)
+
       table.string('whatsapp', 35)
       table.string('line', 50)
       table.string('instagram', 50)
+      table.string('tiktok', 50)
+      table.string('linkedin', 50)
+
       table.integer('province_id', 2).references('id').inTable('provinces').nullable()
       table.integer('city_id', 4).references('id').inTable('cities').nullable()
       table.integer('university_id', 4).references('id').inTable('universities').nullable()

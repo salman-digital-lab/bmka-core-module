@@ -22,10 +22,19 @@ export default class Profile extends BaseModel {
   declare name: string
 
   @column()
+  declare personal_id: string
+
+  @column()
   declare gender: string
 
   @column()
   declare whatsapp: string
+
+  @column()
+  declare tiktok: string
+
+  @column()
+  declare linkedin: string
 
   @column()
   declare line: string
