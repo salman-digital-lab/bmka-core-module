@@ -19,7 +19,10 @@ export default class CloseRegistration extends BaseCommand {
         .where('registration_end', '<', DateTime.local().toSQLDate())
         .update({ is_published: 0 }, ['id', 'slug'])
 
-      logger.info(activities)
+      logger.info('completed: unpublished activities')
+      for (let data of activities) {
+        logger.info('ID ' + data.id)
+      }
     } catch (error) {
       logger.error(error.message)
     }
