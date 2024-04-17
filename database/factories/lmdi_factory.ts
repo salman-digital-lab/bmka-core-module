@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { ActivityType } from '../../enum.js'
 
 export const LMDIActivityRegistration = factory
+  // @ts-expect-error need to fix later
   .define(Activity, async () => {
     return {
       name: 'Open Registration ILIAS',

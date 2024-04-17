@@ -3,6 +3,7 @@ import Activity from '#models/activity'
 import { DateTime } from 'luxon'
 
 export const ActivityFactory = factory
+  // @ts-expect-error need to fix later
   .define(Activity, async ({ faker }) => {
     const name = faker.lorem.sentence()
     const today = DateTime.now()
@@ -68,6 +69,7 @@ export const ActivityFactory = factory
   .build()
 
 export const FinishedActivityFactory = factory
+  // @ts-expect-error need to fix later
   .define(Activity, async ({ faker }) => {
     const name = faker.lorem.sentence()
     const today = DateTime.now()
