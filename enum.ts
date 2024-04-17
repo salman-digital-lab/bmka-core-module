@@ -8,6 +8,18 @@ export enum Level {
   KADER_LANJUT,
 }
 
+export enum ActivityType {
+  COMMON,
+  REGISTRATION_ONLY,
+  SSC,
+  KK,
+  LMD,
+  INVENTRA,
+  KOMPROF,
+  SPECTRA,
+  SUB_PROGRAM,
+}
+
 export enum ActivityCategory {
   PELATIHAN,
   KEASRAMAAN,

@@ -42,10 +42,10 @@ export default class Activity extends BaseModel {
   declare activityCategory: number
 
   @column()
-  declare additionalQuestionnaire: string
+  declare additionalQuestionnaire: Record<string, any>[]
 
   @column()
-  declare additionalConfig: string
+  declare additionalConfig: Record<string, any>
 
   @column()
   declare images: string

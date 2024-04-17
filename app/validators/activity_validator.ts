@@ -45,7 +45,7 @@ export const updateActivityValidator = vine.compile(
       })
       .optional(),
     is_published: vine.number().optional(),
-    additional_questionnaire: vine.string().optional(),
+    additional_questionnaire: vine.any().optional(),
     activity_category: vine.number().withoutDecimals().positive().optional(),
   })
 )
