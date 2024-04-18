@@ -14,6 +14,8 @@ import {
   LMDIActivityRegistration,
   LMDIActivitySecondSelection,
 } from '#database/factories/lmdi_factory'
+import { RealUserFactory } from '#database/factories/public_user_factory'
+import { RealProfileFactory } from '#database/factories/profile_factory'
 
 export default class extends BaseSeeder {
   async run() {
@@ -34,5 +36,8 @@ export default class extends BaseSeeder {
 
     // Real Data Seeder
     await RealAdminUserFactory.create()
+
+    const user = await RealUserFactory.create()
+    await RealProfileFactory.merge({ userId: user.id }).create()
   }
 }

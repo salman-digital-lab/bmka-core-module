@@ -3,6 +3,50 @@ import Activity from '#models/activity'
 import { DateTime } from 'luxon'
 import { ActivityCategory, ActivityType } from '../../enum.js'
 
+type Questionnaire =
+  | {
+      id?: number
+      type: 'text' | 'number'
+      label: string
+      name: string
+      required: boolean
+    }
+  | {
+      id?: number
+      type: 'dropdown'
+      label: string
+      name: string
+      required: boolean
+      data: { label: string; value: string; id: number }[]
+    }
+
+const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
+  {
+    type: 'text',
+    label: 'What is your motivation for joining this event?',
+    name: 'question1664618698378',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'Where did you hear about this event?',
+    name: 'question1664613454378',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'Referal Code',
+    name: 'question16646132498378',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'GDrive link to your CV',
+    name: 'question162434618698378',
+    required: true,
+  },
+]
+
 export const LMDIActivityRegistration = factory
   .define(Activity, async () => {
     return {
@@ -12,6 +56,9 @@ export const LMDIActivityRegistration = factory
       registration_end: DateTime.local(2024, 5, 31),
       activity_type: ActivityType.REGISTRATION_ONLY,
       activityCategory: ActivityCategory.KADERISASI,
+      additionalQuestionnaire: JSON.stringify(
+        ADDITIONAL_QUESTIONNAIRE_DEFAULT
+      ) as unknown as Questionnaire[],
       is_published: 1,
       additionalConfig: {
         custom_selection_data: [],
