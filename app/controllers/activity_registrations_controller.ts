@@ -37,8 +37,7 @@ export default class ActivityRegistrationsController {
 
     try {
       const activity = await Activity.findOrFail(activityId)
-      const config = JSON.parse(activity.additionalConfig)
-      const mandatoryData: string[] = config.mandatory_profile_data
+      const mandatoryData: string[] = activity.additionalConfig.mandatory_profile_data
       mandatoryData.map((element) => {
         element = 'profiles.' + element
       })
