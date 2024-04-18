@@ -147,8 +147,11 @@ export default class ActivityRegistrationsController {
         { header: 'Gender', key: 'gender', width: 7, style: { font: font } },
         { header: 'Email', key: 'email', width: 30, style: { font: font } },
         { header: 'Whatsapp', key: 'whatsapp', width: 20, style: { font: font } },
+        { header: 'Personal ID', key: 'personal_id', width: 15, style: { font: font } },
         { header: 'Line ID', key: 'line', width: 15, style: { font: font } },
         { header: 'Instagram', key: 'instagram', width: 15, style: { font: font } },
+        { header: 'TikTok', key: 'tiktok', width: 15, style: { font: font } },
+        { header: 'LinkedIn', key: 'linkedin', width: 15, style: { font: font } },
         {
           header: 'Province',
           key: 'province',
@@ -172,9 +175,14 @@ export default class ActivityRegistrationsController {
         { header: 'Role', key: 'level', width: 15, style: { font: font } },
       ]
 
-      const questions: Array<{ label: string; name: string }> = JSON.parse(
-        activity.additionalQuestionnaire
-      )
+      const questions: Array<{
+        label: string
+        name: string
+        type: string
+        required: boolean
+        data?: Array<{ id: number; label: string; value: string }>
+      }> = JSON.parse(JSON.stringify(activity.additionalQuestionnaire))
+
       questions.forEach((question) => {
         worksheet.columns = [
           ...worksheet.columns,
@@ -187,6 +195,10 @@ export default class ActivityRegistrationsController {
         ]
       })
 
+      var provinceName: string = ''
+      var cityName: string = ''
+      var universityName: string = ''
+
       for (let [i, item] of registrations.entries()) {
         let profile = await Profile.query()
           .where('user_id', item.publicUser.id)
@@ -195,17 +207,24 @@ export default class ActivityRegistrationsController {
           .preload('university')
           .firstOrFail()
 
+        if (profile.province) provinceName = profile.province.name
+        if (profile.city) cityName = profile.city.name
+        if (profile.university) universityName = profile.university.name
+
         let profileRowData = {
           no: i + 1,
           name: profile.name,
           gender: profile.gender,
           email: item.publicUser.email,
           whatsapp: profile.whatsapp,
+          personal_id: profile.personal_id,
           line: profile.line,
           instagram: profile.instagram,
-          province: profile.province.name,
-          city: profile.city.name,
-          university: profile.university.name,
+          tiktok: profile.tiktok,
+          linkedin: profile.linkedin,
+          province: provinceName,
+          city: cityName,
+          university: universityName,
           major: profile.major,
           intake_year: profile.intakeYear,
           level: profile.level,
@@ -213,11 +232,12 @@ export default class ActivityRegistrationsController {
         /*
 
         questionnaireAnswer sample:
+
         {
           "0":"Jawaban 1",
           "1":"Jawaban 2",
-          "2":"["Apple", "Peach"]",
-          "3":"Jawaban 2",
+          "2":"Jawaban 3",
+          "3":"Jawaban 4",
         }
 
         */
@@ -242,7 +262,7 @@ export default class ActivityRegistrationsController {
     } catch (error) {
       return response.internalServerError({
         message: 'GENERAL_ERROR',
-        error: error.message,
+        error: error.stack,
       })
     }
   }
