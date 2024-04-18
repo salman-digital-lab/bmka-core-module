@@ -2,8 +2,63 @@ import factory from '@adonisjs/lucid/factories'
 import Activity from '#models/activity'
 import { DateTime } from 'luxon'
 
+type Questionnaire =
+  | {
+      id?: number
+      type: 'text' | 'number'
+      label: string
+      name: string
+      required: boolean
+    }
+  | {
+      id?: number
+      type: 'dropdown'
+      label: string
+      name: string
+      required: boolean
+      data: { label: string; value: string; id: number }[]
+    }
+
+const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
+  {
+    type: 'text',
+    label:
+      'Jika kamu sudah berinfaq/donasi untuk Masjid Salman ITB, silakan upload bukti transfernya di google drive, lalu taruh link-nya di sini ya!',
+    name: 'question1664618698378',
+    required: true,
+  },
+  {
+    type: 'dropdown',
+    label: 'Sudah menyalurkan kebaikan ini melalui apa nih?',
+    name: 'question1664618817082',
+    required: true,
+    data: [
+      {
+        id: 1,
+        label: 'Share poster ke 3 WA Grup',
+        value: 'share poster ke 3 wa grup',
+      },
+      {
+        id: 2,
+        label: 'Mention minimal 5 akun bestienya di postingan IG',
+        value: 'mention minimal 5 akun bestienya di postingan ig',
+      },
+      {
+        id: 3,
+        label: 'Ngajak sebanyak-banyak bestienya buat ikutan juga',
+        value: 'ngajak sebanyak-banyak bestienya buat ikutan juga',
+      },
+    ],
+  },
+  {
+    type: 'number',
+    label: 'Seberapa besar motivasimu mengikuti kegiatan ini?',
+    name: 'question1664619435933',
+    required: true,
+  },
+] as Questionnaire[]
+
 export const ActivityFactory = factory
-  // @ts-expect-error need to fix later
   .define(Activity, async ({ faker }) => {
     const name = faker.lorem.sentence()
     const today = DateTime.now()
@@ -22,54 +77,16 @@ export const ActivityFactory = factory
       activity_type: faker.number.int({ min: 0, max: 7 }),
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: 1,
-      additionalConfig: JSON.stringify({
+      additionalConfig: {
         custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
         mandatory_profile_data: ['whatsapp', 'province_id', 'university_id'],
-      }),
-      additionalQuestionnaire: JSON.stringify([
-        {
-          type: 'text',
-          label:
-            'Jika kamu sudah berinfaq/donasi untuk Masjid Salman ITB, silakan upload bukti transfernya di google drive, lalu taruh link-nya di sini ya!',
-          name: 'question1664618698378',
-          required: true,
-        },
-        {
-          type: 'dropdown',
-          label: 'Sudah menyalurkan kebaikan ini melalui apa nih?',
-          name: 'question1664618817082',
-          required: true,
-          data: [
-            {
-              id: 1,
-              label: 'Share poster ke 3 WA Grup',
-              value: 'share poster ke 3 wa grup',
-            },
-            {
-              id: 2,
-              label: 'Mention minimal 5 akun bestienya di postingan IG',
-              value: 'mention minimal 5 akun bestienya di postingan ig',
-            },
-            {
-              id: 3,
-              label: 'Ngajak sebanyak-banyak bestienya buat ikutan juga',
-              value: 'ngajak sebanyak-banyak bestienya buat ikutan juga',
-            },
-          ],
-        },
-        {
-          type: 'number',
-          label: 'Seberapa besar motivasimu mengikuti kegiatan ini?',
-          name: 'question1664619435933',
-          required: true,
-        },
-      ]),
+      },
+      additionalQuestionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
     }
   })
   .build()
 
 export const FinishedActivityFactory = factory
-  // @ts-expect-error need to fix later
   .define(Activity, async ({ faker }) => {
     const name = faker.lorem.sentence()
     const today = DateTime.now()
@@ -88,48 +105,11 @@ export const FinishedActivityFactory = factory
       activity_type: faker.number.int({ min: 0, max: 7 }),
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: 0,
-      additionalConfig: JSON.stringify({
+      additionalConfig: {
         custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
         mandatory_profile_data: ['whatsapp', 'province_id', 'university_id', 'name'],
-      }),
-      additionalQuestionnaire: JSON.stringify([
-        {
-          type: 'text',
-          label:
-            'Jika kamu sudah berinfaq/donasi untuk Masjid Salman ITB, silakan upload bukti transfernya di google drive, lalu taruh link-nya di sini ya!',
-          name: 'question1664618698378',
-          required: true,
-        },
-        {
-          type: 'dropdown',
-          label: 'Sudah menyalurkan kebaikan ini melalui apa nih?',
-          name: 'question1664618817082',
-          required: true,
-          data: [
-            {
-              id: 1,
-              label: 'Share poster ke 3 WA Grup',
-              value: 'share poster ke 3 wa grup',
-            },
-            {
-              id: 2,
-              label: 'Mention minimal 5 akun bestienya di postingan IG',
-              value: 'mention minimal 5 akun bestienya di postingan ig',
-            },
-            {
-              id: 3,
-              label: 'Ngajak sebanyak-banyak bestienya buat ikutan juga',
-              value: 'ngajak sebanyak-banyak bestienya buat ikutan juga',
-            },
-          ],
-        },
-        {
-          type: 'number',
-          label: 'Seberapa besar motivasimu mengikuti kegiatan ini?',
-          name: 'question1664619435933',
-          required: true,
-        },
-      ]),
+      },
+      additionalQuestionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
     }
   })
   .build()
