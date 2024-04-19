@@ -174,14 +174,17 @@ export default class ActivityRegistrationsController {
         { header: 'Role', key: 'level', width: 15, style: { font: font } },
       ]
 
+      const questionnaire: string = JSON.stringify(activity.additionalQuestionnaire)
+
       const questions: Array<{
         label: string
         name: string
         type: string
         required: boolean
         data?: Array<{ id: number; label: string; value: string }>
-      }> = JSON.parse(JSON.stringify(activity.additionalQuestionnaire))
+      }> = JSON.parse(questionnaire)
 
+      const keys: string[] = []
       questions.forEach((question) => {
         worksheet.columns = [
           ...worksheet.columns,
@@ -192,6 +195,7 @@ export default class ActivityRegistrationsController {
             style: { font: font },
           },
         ]
+        keys.push(question.name) // store keys for worksheet.addRow
       })
 
       var provinceName: string = ''
@@ -241,10 +245,13 @@ export default class ActivityRegistrationsController {
 
         */
 
-        let parsedAnswers: { [index: string]: string } = JSON.parse(item.questionnaireAnswer)
-        let answers: string[] = Object.keys(parsedAnswers).map((key) => parsedAnswers[key])
-        let answerRowData = Object.assign({}, answers)
-        let rowData = { ...profileRowData, ...answerRowData }
+        const parsedAnswers: { [index: string]: string } = JSON.parse(item.questionnaireAnswer)
+        const values: string[] = Object.values(parsedAnswers)
+        const answerRowData: { [key: string]: string } = {}
+        for (const [index, key] of keys.entries()) {
+          answerRowData[key] = values[index]
+        }
+        const rowData = { ...profileRowData, ...answerRowData }
         worksheet.addRow(rowData)
       }
 
