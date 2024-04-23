@@ -12,7 +12,6 @@ import {
   LMDIActivityMain,
   LMDIActivityPersonalityAssesment,
   LMDIActivityRegistration,
-  LMDIActivitySecondSelection,
 } from '#database/factories/lmdi_factory'
 import { RealUserFactory } from '#database/factories/public_user_factory'
 import { RealProfileFactory } from '#database/factories/profile_factory'
@@ -29,7 +28,6 @@ export default class extends BaseSeeder {
 
     await LMDIActivityRegistration.create()
     await LMDIActivityFirstTraining.create()
-    await LMDIActivitySecondSelection.create()
     await LMDIActivityPersonalityAssesment.create()
     await LMDIActivityInnovatorClass.create()
     await LMDIActivityMain.create()
