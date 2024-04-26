@@ -10,6 +10,18 @@ import {
 } from '#validators/activity_validator'
 
 export default class ActivityRegistrationsController {
+  async store({ request, response }: HttpContext) {
+    try {
+      return response.ok({
+        messages: 'CREATE_DATA_SUCCESS',
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
   async show({ params, response }: HttpContext) {
     const registrationId: number = params.id
     try {
