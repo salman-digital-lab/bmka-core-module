@@ -15,12 +15,12 @@ export const activityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_data: vine.array(vine.string()),
-        mandatory_profile_data: vine.array(vine.string()),
+        custom_selection_status: vine.array(vine.string()).optional(),
+        mandatory_profile_data: vine.array(vine.string()).optional(),
+        additional_questionnaire: vine.array(vine.any()).optional(),
       })
       .optional(),
     is_published: vine.number().optional(),
-    additional_questionnaire: vine.string().optional(),
     activity_category: vine.number().withoutDecimals().positive().optional(),
   })
 )
@@ -40,12 +40,12 @@ export const updateActivityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_data: vine.array(vine.string()),
-        mandatory_profile_data: vine.array(vine.string()),
+        custom_selection_status: vine.array(vine.string()).optional(),
+        mandatory_profile_data: vine.array(vine.string()).optional(),
+        additional_questionnaire: vine.array(vine.any()).optional(),
       })
       .optional(),
     is_published: vine.number().optional(),
-    additional_questionnaire: vine.any().optional(),
     activity_category: vine.number().withoutDecimals().positive().optional(),
   })
 )

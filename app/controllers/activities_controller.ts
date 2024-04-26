@@ -90,13 +90,7 @@ export default class ActivitiesController {
         })
       }
 
-      var fileNames: string[]
-      if (activity.images !== null) {
-        fileNames = activity.images.split(',')
-      } else {
-        fileNames = []
-      }
-
+      const fileNames: string[] = activity.additionalConfig.images
       const image = payload.images
 
       let newName = `${new Date().getTime()}.${image.subtype}`
@@ -106,8 +100,10 @@ export default class ActivitiesController {
       })
 
       fileNames.push(newName)
+      const newConfig = activity.additionalConfig
+      newConfig.images = fileNames
 
-      await activity.merge({ images: fileNames.toString() }).save()
+      await activity.merge({ additionalConfig: newConfig }).save()
 
       return response.ok({
         message: 'UPLOAD_IMAGE_SUCCESS',
@@ -127,18 +123,20 @@ export default class ActivitiesController {
     try {
       const activity = await Activity.findOrFail(activityId)
 
-      if (activity.images === null) {
+      if (activity.additionalConfig.images.length === 0) {
         return response.notFound({
           message: 'IMAGE_NOT_FOUND',
         })
       }
 
-      const filePath = `./public/activity-images/${activity.images[index]}`
+      const filePath = `./public/activity-images/${activity.additionalConfig.images[index]}`
       await unlink(filePath)
 
-      const images: string[] = activity.images.split(',')
+      const images: string[] = activity.additionalConfig.images
       images.splice(index, 1)
-      await activity.merge({ images: images.toString() }).save()
+      const newConfig = activity.additionalConfig
+      newConfig.images = images
+      await activity.merge({ additionalConfig: newConfig }).save()
 
       return response.ok({
         message: 'DELETE_IMAGE_SUCCESS',
