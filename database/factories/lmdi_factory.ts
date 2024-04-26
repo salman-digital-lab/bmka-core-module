@@ -75,6 +75,7 @@ export const LMDIActivityRegistration = factory
       activityCategory: ActivityCategory.KADERISASI,
       is_published: 1,
       additionalConfig: {
+        images: [],
         custom_selection_status: [],
         mandatory_profile_data: PERSONAL_QUESTIONNAIRE_DEFAULT,
         additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
