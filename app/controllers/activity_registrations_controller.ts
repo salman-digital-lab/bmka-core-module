@@ -7,13 +7,42 @@ import db from '@adonisjs/lucid/services/db'
 import {
   updateActivityRegistrations,
   bulkUpdateActivityRegistrations,
+  storeActivityRegistration,
 } from '#validators/activity_validator'
 
 export default class ActivityRegistrationsController {
-  async store({ request, response }: HttpContext) {
+  async store({ params, request, response }: HttpContext) {
+    const payload = await storeActivityRegistration.validate(request.all())
+    const activityId = params.id
     try {
+      const userData = await Profile.findOrFail(payload.user_id)
+      const activity = await Activity.findOrFail(activityId)
+      const registered = await ActivityRegistration.query().where({
+        user_id: payload.user_id,
+        activity_id: activity.id,
+      })
+
+      if (registered && registered.length) {
+        return response.conflict({
+          message: 'ALREADY_REGISTERED',
+        })
+      }
+
+      if (userData.level < activity.minimumLevel) {
+        return response.forbidden({
+          message: 'UNMATCHED_LEVEL',
+        })
+      }
+      const registration = await ActivityRegistration.create({
+        userId: payload.user_id,
+        activityId: activity.id,
+        status: 'TERDAFTAR',
+        questionnaireAnswer: payload.questionnaire_answer,
+      })
+
       return response.ok({
         messages: 'CREATE_DATA_SUCCESS',
+        data: registration,
       })
     } catch (error) {
       return response.internalServerError({
@@ -26,7 +55,6 @@ export default class ActivityRegistrationsController {
     const registrationId: number = params.id
     try {
       const registration = await ActivityRegistration.findOrFail(registrationId)
-      registration.questionnaireAnswer = JSON.parse(registration.questionnaireAnswer)
 
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
@@ -259,8 +287,8 @@ export default class ActivityRegistrationsController {
 
         */
 
-        const parsedAnswers: { [index: string]: string } = JSON.parse(item.questionnaireAnswer)
-        const values: string[] = Object.values(parsedAnswers)
+        const answers: { [index: string]: string } = item.questionnaireAnswer
+        const values: string[] = Object.values(answers)
         const answerRowData: { [key: string]: string } = {}
         for (const [index, key] of keys.entries()) {
           answerRowData[key] = values[index]

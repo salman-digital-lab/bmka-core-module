@@ -108,9 +108,9 @@ export const FinishedActivityFactory = factory
       additionalConfig: {
         custom_selection_status: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
         mandatory_profile_data: [],
-        additional_questionnaire: [],
+        additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
+        images: [],
       },
-      additionalQuestionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
     }
   })
   .build()
