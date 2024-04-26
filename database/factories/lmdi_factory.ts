@@ -3,10 +3,15 @@ import Activity from '#models/activity'
 import { DateTime } from 'luxon'
 import { ActivityCategory, ActivityType } from '../../enum.js'
 
+type PersonalQuestionnaire = {
+  name: string
+  required: boolean
+}
+
 type Questionnaire =
   | {
       id?: number
-      type: 'text' | 'number'
+      type: 'text' | 'number' | 'textarea'
       label: string
       name: string
       required: boolean
@@ -19,6 +24,18 @@ type Questionnaire =
       required: boolean
       data: { label: string; value: string; id: number }[]
     }
+
+const PERSONAL_QUESTIONNAIRE_DEFAULT = [
+  { name: 'personal_id', required: true },
+  { name: 'gender', required: true },
+  { name: 'province_id', required: true },
+  { name: 'whatsapp', required: true },
+  { name: 'linkedin', required: true },
+  { name: 'tiktok', required: false },
+  { name: 'university_temp', required: true },
+  { name: 'major', required: true },
+  { name: 'intake_year', required: true },
+] as PersonalQuestionnaire[]
 
 const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
   {
@@ -35,34 +52,32 @@ const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
   },
   {
     type: 'text',
-    label: 'Referal Code',
-    name: 'question16646132498378',
+    label: 'Enter the link to your curriculum vitae',
+    name: 'question162434618698378',
     required: true,
   },
   {
     type: 'text',
-    label: 'GDrive link to your CV',
-    name: 'question162434618698378',
+    label: 'Enter your referal code',
+    name: 'question16646132498378',
     required: true,
   },
-]
+] as Questionnaire[]
 
 export const LMDIActivityRegistration = factory
   .define(Activity, async () => {
     return {
-      name: 'Open Registration ILIAS',
-      slug: 'open-registration-ilias',
+      name: 'Call For Participants',
+      slug: 'call-for-participants',
       registration_start: DateTime.local(2024, 4, 12),
       registration_end: DateTime.local(2024, 5, 31),
       activity_type: ActivityType.REGISTRATION_ONLY,
       activityCategory: ActivityCategory.KADERISASI,
-      additionalQuestionnaire: JSON.stringify(
-        ADDITIONAL_QUESTIONNAIRE_DEFAULT
-      ) as unknown as Questionnaire[],
       is_published: 1,
       additionalConfig: {
-        custom_selection_data: [],
-        mandatory_profile_data: ['linkedin', 'personal_id', 'tiktok'],
+        custom_selection_status: [],
+        mandatory_profile_data: PERSONAL_QUESTIONNAIRE_DEFAULT,
+        additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
       },
     }
   })
@@ -71,8 +86,8 @@ export const LMDIActivityRegistration = factory
 export const LMDIActivityFirstTraining = factory
   .define(Activity, async () => {
     return {
-      name: 'Productive Muslim Training',
-      slug: 'productive-muslim-training',
+      name: 'Youth Productive Class',
+      slug: 'youth-produvtive-class',
       activityCategory: ActivityCategory.KADERISASI,
 
       registration_start: DateTime.local(2024, 6, 7),
@@ -116,8 +131,8 @@ export const LMDIActivityPersonalityAssesment = factory
 export const LMDIActivityInnovatorClass = factory
   .define(Activity, async () => {
     return {
-      name: 'Innovator Class',
-      slug: 'innovator-class',
+      name: 'Innovator Class & Mentorship',
+      slug: 'innovator-class-mentorship',
       activityCategory: ActivityCategory.KADERISASI,
 
       registration_start: DateTime.local(2024, 7, 15),
@@ -131,8 +146,8 @@ export const LMDIActivityInnovatorClass = factory
 export const LMDIActivityMain = factory
   .define(Activity, async () => {
     return {
-      name: 'Leadership in Action Summit',
-      slug: 'leadership-in-action-summit',
+      name: 'Leadership in Action Summit 2024',
+      slug: 'leadership-in-action-summit-2024',
       activityCategory: ActivityCategory.KADERISASI,
       registration_start: DateTime.local(2024, 8, 20),
       registration_end: DateTime.local(2024, 8, 25),

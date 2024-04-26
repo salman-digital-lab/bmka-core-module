@@ -49,9 +49,9 @@ export default class ActivityRegistrationsController {
 
     try {
       const activity = await Activity.findOrFail(activityId)
-      const mandatoryData: string[] = activity.additionalConfig.mandatory_profile_data
-      mandatoryData.map((element) => {
-        element = 'profiles.' + element
+      const mandatoryData = activity.additionalConfig.mandatory_profile_data
+      const profileDataField = mandatoryData.map((element) => {
+        return 'profiles.' + element.name
       })
 
       const registrations = await db
@@ -67,7 +67,7 @@ export default class ActivityRegistrationsController {
           'public_users.email',
           'profiles.name',
           'profiles.level',
-          ...mandatoryData,
+          ...profileDataField,
           'activity_registrations.status'
         )
         .orderBy('activity_registrations.id', 'desc')
@@ -186,7 +186,9 @@ export default class ActivityRegistrationsController {
         { header: 'Role', key: 'level', width: 15, style: { font: font } },
       ]
 
-      const questionnaire: string = JSON.stringify(activity.additionalQuestionnaire)
+      const questionnaire: string = JSON.stringify(
+        activity.additionalConfig.additional_questionnaire
+      )
 
       const questions: Array<{
         label: string

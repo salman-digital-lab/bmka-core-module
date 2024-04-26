@@ -78,10 +78,10 @@ export const ActivityFactory = factory
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: 1,
       additionalConfig: {
-        custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
-        mandatory_profile_data: ['whatsapp', 'province_id', 'university_id'],
+        custom_selection_status: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
+        mandatory_profile_data: [],
+        additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
       },
-      additionalQuestionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
     }
   })
   .build()
@@ -106,8 +106,9 @@ export const FinishedActivityFactory = factory
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: 0,
       additionalConfig: {
-        custom_selection_data: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
-        mandatory_profile_data: ['whatsapp', 'province_id', 'university_id', 'name'],
+        custom_selection_status: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
+        mandatory_profile_data: [],
+        additional_questionnaire: [],
       },
       additionalQuestionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
     }

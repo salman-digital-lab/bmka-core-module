@@ -19,7 +19,9 @@ export default class extends BaseSchema {
 
       table.integer('province_id', 2).references('id').inTable('provinces').nullable()
       table.integer('city_id', 4).references('id').inTable('cities').nullable()
+
       table.integer('university_id', 4).references('id').inTable('universities').nullable()
+      table.string('university_temp', 50)
       table.string('major', 50)
       table.string('intake_year', 4)
       table.integer('level').defaultTo(0)
