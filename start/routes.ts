@@ -101,6 +101,7 @@ router
         router.get(':id/registrations', [ActivityRegistrationsController, 'index'])
         router.get(':id/registrations-export/', [ActivityRegistrationsController, 'export'])
         router.put(':id/registrations', [ActivityRegistrationsController, 'updateStatusBulk'])
+        router.post(':id/registrations', [ActivityRegistrationsController, 'store'])
       })
       .prefix('activities')
       .use(middleware.auth())

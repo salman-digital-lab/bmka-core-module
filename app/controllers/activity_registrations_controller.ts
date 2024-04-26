@@ -51,6 +51,7 @@ export default class ActivityRegistrationsController {
       })
     }
   }
+
   async show({ params, response }: HttpContext) {
     const registrationId: number = params.id
     try {
