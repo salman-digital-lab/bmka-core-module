@@ -19,10 +19,10 @@ export default class extends BaseSchema {
       table.integer('activity_type', 2).nullable().defaultTo(null)
       table.integer('activity_category').nullable().defaultTo(null)
       table.string('images', 255).nullable().defaultTo(null)
-      table.json('additional_questionnaire').nullable().defaultTo([])
-      table.json('additional_config').nullable().defaultTo({
-        custom_selection_data: [],
+      table.jsonb('additional_config').nullable().defaultTo({
+        custom_selection_status: [],
         mandatory_profile_data: [],
+        additional_questionnaire: [],
       })
       table.integer('is_published', 1).defaultTo(1)
 

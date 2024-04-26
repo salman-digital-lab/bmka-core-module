@@ -3,10 +3,15 @@ import Activity from '#models/activity'
 import { DateTime } from 'luxon'
 import { ActivityCategory, ActivityType } from '../../enum.js'
 
+type PersonalQuestionnaire = {
+  name: string
+  required: boolean
+}
+
 type Questionnaire =
   | {
       id?: number
-      type: 'text' | 'number'
+      type: 'text' | 'number' | 'textarea'
       label: string
       name: string
       required: boolean
@@ -19,6 +24,18 @@ type Questionnaire =
       required: boolean
       data: { label: string; value: string; id: number }[]
     }
+
+const PERSONAL_QUESTIONNAIRE_DEFAULT = [
+  { name: 'personal_id', required: true },
+  { name: 'gender', required: true },
+  { name: 'province_id', required: true },
+  { name: 'whatsapp', required: true },
+  { name: 'linkedin', required: true },
+  { name: 'tiktok', required: false },
+  { name: 'university_temp', required: true },
+  { name: 'major', required: true },
+  { name: 'intake_year', required: true },
+] as PersonalQuestionnaire[]
 
 const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
   {
@@ -45,7 +62,7 @@ const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
     name: 'question16646132498378',
     required: true,
   },
-]
+] as Questionnaire[]
 
 export const LMDIActivityRegistration = factory
   .define(Activity, async () => {
@@ -56,23 +73,11 @@ export const LMDIActivityRegistration = factory
       registration_end: DateTime.local(2024, 5, 31),
       activity_type: ActivityType.REGISTRATION_ONLY,
       activityCategory: ActivityCategory.KADERISASI,
-      additionalQuestionnaire: JSON.stringify(
-        ADDITIONAL_QUESTIONNAIRE_DEFAULT
-      ) as unknown as Questionnaire[],
       is_published: 1,
       additionalConfig: {
-        custom_selection_data: [],
-        mandatory_profile_data: [
-          'personal_id',
-          'gender',
-          'province_id',
-          'whatsapp',
-          'linkedin',
-          'tiktok',
-          'university_id',
-          'major',
-          'intake_year',
-        ],
+        custom_selection_status: [],
+        mandatory_profile_data: PERSONAL_QUESTIONNAIRE_DEFAULT,
+        additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
       },
     }
   })
