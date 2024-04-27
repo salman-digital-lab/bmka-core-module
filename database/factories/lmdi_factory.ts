@@ -78,6 +78,7 @@ export const LMDIActivityRegistration = factory
         custom_selection_status: [],
         mandatory_profile_data: PERSONAL_QUESTIONNAIRE_DEFAULT,
         additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
+        images: [],
       },
     }
   })

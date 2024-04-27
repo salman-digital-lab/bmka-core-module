@@ -15,9 +15,11 @@ export const activityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_status: vine.array(vine.string()).optional(),
-        mandatory_profile_data: vine.array(vine.string()).optional(),
-        additional_questionnaire: vine.array(vine.any()).optional(),
+        custom_selection_status: vine.array(vine.string()),
+        mandatory_profile_data: vine.array(
+          vine.object({ name: vine.string(), required: vine.boolean() })
+        ),
+        additional_questionnaire: vine.array(vine.any()),
       })
       .optional(),
     is_published: vine.number().optional(),
@@ -40,9 +42,11 @@ export const updateActivityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_status: vine.array(vine.string()).optional(),
-        mandatory_profile_data: vine.array(vine.string()).optional(),
-        additional_questionnaire: vine.array(vine.any()).optional(),
+        custom_selection_status: vine.array(vine.string()),
+        mandatory_profile_data: vine.array(
+          vine.object({ name: vine.string(), required: vine.boolean() })
+        ),
+        additional_questionnaire: vine.array(vine.any()),
       })
       .optional(),
     is_published: vine.number().optional(),

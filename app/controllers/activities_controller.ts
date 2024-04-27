@@ -90,7 +90,11 @@ export default class ActivitiesController {
         })
       }
 
-      const fileNames: string[] = activity.additionalConfig.images
+      var fileNames: string[] = []
+      if (activity.additionalConfig.images) {
+        fileNames = activity.additionalConfig.images
+      }
+
       const image = payload.images
 
       let newName = `${new Date().getTime()}.${image.subtype}`
@@ -189,6 +193,13 @@ export default class ActivitiesController {
     try {
       const id: number = params.id
       const activityData = await Activity.findOrFail(id)
+      if (payload.additional_config) {
+        var newConfig: any = payload.additional_config
+        if (activityData.additionalConfig.images) {
+          newConfig.images = activityData.additionalConfig.images
+        }
+      }
+      payload.additional_config = newConfig
       const updated = await activityData
         .merge({
           ...payload,
