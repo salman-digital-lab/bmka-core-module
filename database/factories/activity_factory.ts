@@ -78,6 +78,7 @@ export const ActivityFactory = factory
       activity_category: faker.number.int({ min: 0, max: 5 }),
       is_published: 1,
       additionalConfig: {
+        images: [],
         custom_selection_status: ['Tahap 1', 'Tahap 2', 'Tahap 3'],
         mandatory_profile_data: [],
         additional_questionnaire: ADDITIONAL_QUESTIONNAIRE_DEFAULT,
