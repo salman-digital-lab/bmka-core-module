@@ -215,17 +215,13 @@ export default class ActivityRegistrationsController {
         { header: 'Role', key: 'level', width: 15, style: { font: font } },
       ]
 
-      const questionnaire: string = JSON.stringify(
-        activity.additionalConfig.additional_questionnaire
-      )
-
       const questions: Array<{
         label: string
         name: string
         type: string
         required: boolean
         data?: Array<{ id: number; label: string; value: string }>
-      }> = JSON.parse(questionnaire)
+      }> = activity.additionalConfig.additional_questionnaire
 
       const keys: string[] = []
       questions.forEach((question) => {
