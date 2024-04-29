@@ -39,26 +39,59 @@ const PERSONAL_QUESTIONNAIRE_DEFAULT = [
 
 const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
   {
-    type: 'text',
+    type: 'textarea',
     label: 'What is your motivation for joining this event?',
     name: 'question1664618698378',
     required: true,
   },
   {
-    type: 'text',
+    type: 'dropdown',
     label: 'Where did you hear about this event?',
-    name: 'question1664613454378',
+    name: 'question1664618817082',
     required: true,
+    data: [
+      {
+        id: 1,
+        label: 'Instagram @interleadershipsummit',
+        value: 'Instagram @interleadershipsummit',
+      },
+      {
+        id: 2,
+        label: 'ILiAS Brand Ambassador',
+        value: 'ILiAS Brand Ambassador',
+      },
+      {
+        id: 3,
+        label: 'Broadcast Message',
+        value: 'Broadcast Message',
+      },
+      {
+        id: 3,
+        label: 'Media Partner Instagram',
+        value: 'Media Partner Instagram',
+      },
+      {
+        id: 3,
+        label: 'Friend / Colleague',
+        value: 'Friend / Colleague',
+      },
+    ],
   },
   {
     type: 'text',
-    label: 'Enter the link to your curriculum vitae',
+    label: 'Link to your curriculum vitae',
     name: 'question162434618698378',
     required: true,
   },
   {
     type: 'text',
-    label: 'Enter your referal code',
+    label: 'Link copy of the last transcript',
+    name: 'question1624346186343378',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'Enter your referral code',
     name: 'question16646132498378',
     required: true,
   },
@@ -73,6 +106,8 @@ export const LMDIActivityRegistration = factory
       registration_end: DateTime.local(2024, 5, 31),
       activity_type: ActivityType.REGISTRATION_ONLY,
       activityCategory: ActivityCategory.KADERISASI,
+      description: `<p><span style=\"color: rgb(0, 0, 0);\">🚨 [LMDI TEST ONLY] 🚨</span></p><p class=\"ql-align-right\"><br></p><p><span style=\"color: rgb(0, 0, 0);\">Assalamualaikum para penyelaras peradaban!</span></p><p><span style=\"color: rgb(0, 0, 0);\">Siapkah kamu berkontribusi untuk membantu menyeimbangkan kehidupan??</span></p><p class=\"ql-align-right\"><br></p><p><span style=\"color: rgb(0, 0, 0);\">Keseimbangan tidak akan terjadi tanpa adanya usaha dan pengetahuan dalam setiap prosesnya. Kami membutuhkan jiwa-jiwa pemegang kunci peradaban yang senantiasa berjuang sampai titik penghabisan.</span></p><p><br></p><p><span style=\"color: rgb(0, 0, 0);\">Ayoo mari bergabung bersama kami di SSC + KK 59 Chapter Jogja. Karena kami membutuhkan kalian para kontributor pencetak generasi penyeimbang kehidupan!</span></p><p><br></p><p><span style=\"color: rgb(0, 0, 0);\">⏰ SSC KK 59 Chapter Jogja :</span></p><p><span style=\"color: rgb(0, 0, 0);\">The Day SSC 59 : 04-05 Mei 2024 (Sabtu - Minggu)</span></p><p><span style=\"color: rgb(0, 0, 0);\">The Day KK Jogja : 06-11 Mei 2024 (Senin - Sabtu)</span></p><p><br></p><p><span style=\"color: rgb(0, 0, 0);\">👇🏻👇🏻Link pendaftaran👇🏻👇🏻</span></p><p><span style=\"color: rgb(0, 0, 0);\">https://bit.ly/DaftarPanitiaSSCKK59</span></p><p><span style=\"color: rgb(0, 0, 0);\">https://bit.ly/DaftarPanitiaSSCKK59</span></p><p><span style=\"color: rgb(0, 0, 0);\">https://bit.ly/DaftarPanitiaSSCKK59</span></p><p><br></p><p><span style=\"color: rgb(0, 0, 0);\">Pendaftaran panitia hanya sampai 24 Maret 2024. Jadi, jangan sampai kelewatan yaa!</span></p><p><br></p><p><span style=\"color: rgb(0, 0, 0);\">☎ Narahubung ☎</span></p><p><span style=\"color: rgb(0, 0, 0);\">WA : 0895345077686</span></p><p><span style=\"color: rgb(0, 0, 0);\">nanya2: https://bit.ly/QnAPanitSSCKK59</span></p>`,
+
       is_published: 1,
       additionalConfig: {
         images: [],
