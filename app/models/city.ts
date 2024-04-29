@@ -16,4 +16,7 @@ export default class City extends BaseModel {
 
   @column()
   declare name: string
+
+  @column()
+  declare isActive: boolean
 }

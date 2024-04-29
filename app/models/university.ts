@@ -6,4 +6,7 @@ export default class University extends BaseModel {
 
   @column()
   declare name: string
+
+  @column()
+  declare isActive: boolean
 }
