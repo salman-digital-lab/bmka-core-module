@@ -26,11 +26,11 @@ export default class extends BaseSeeder {
     await RoleFactory.createMany(5)
     await RolesPermissionFactory.createMany(10)
 
-    await LMDIActivityRegistration.create()
-    await LMDIActivityFirstTraining.create()
-    await LMDIActivityPersonalityAssesment.create()
-    await LMDIActivityInnovatorClass.create()
     await LMDIActivityMain.create()
+    await LMDIActivityInnovatorClass.create()
+    await LMDIActivityPersonalityAssesment.create()
+    await LMDIActivityFirstTraining.create()
+    await LMDIActivityRegistration.create()
 
     // Real Data Seeder
     await RealAdminUserFactory.create()

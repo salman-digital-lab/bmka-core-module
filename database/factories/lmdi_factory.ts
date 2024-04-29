@@ -39,26 +39,59 @@ const PERSONAL_QUESTIONNAIRE_DEFAULT = [
 
 const ADDITIONAL_QUESTIONNAIRE_DEFAULT = [
   {
-    type: 'text',
+    type: 'textarea',
     label: 'What is your motivation for joining this event?',
     name: 'question1664618698378',
     required: true,
   },
   {
-    type: 'text',
+    type: 'dropdown',
     label: 'Where did you hear about this event?',
-    name: 'question1664613454378',
+    name: 'question1664618817082',
     required: true,
+    data: [
+      {
+        id: 1,
+        label: 'Instagram @interleadershipsummit',
+        value: 'Instagram @interleadershipsummit',
+      },
+      {
+        id: 2,
+        label: 'ILiAS Brand Ambassador',
+        value: 'ILiAS Brand Ambassador',
+      },
+      {
+        id: 3,
+        label: 'Broadcast Message',
+        value: 'Broadcast Message',
+      },
+      {
+        id: 3,
+        label: 'Media Partner Instagram',
+        value: 'Media Partner Instagram',
+      },
+      {
+        id: 3,
+        label: 'Friend / Colleague',
+        value: 'Friend / Colleague',
+      },
+    ],
   },
   {
     type: 'text',
-    label: 'Enter the link to your curriculum vitae',
+    label: 'Link to your curriculum vitae',
     name: 'question162434618698378',
     required: true,
   },
   {
     type: 'text',
-    label: 'Enter your referal code',
+    label: 'Link copy of the last transcript',
+    name: 'question1624346186343378',
+    required: true,
+  },
+  {
+    type: 'text',
+    label: 'Enter your referral code',
     name: 'question16646132498378',
     required: true,
   },
