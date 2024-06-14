@@ -56,6 +56,11 @@ export default class ProfilesController {
       const payload = await updateProfileValidator.validate(request.all())
       const id: number = params.id
       const profile = await Profile.findByOrFail('user_id', id)
+      if (payload.password) {
+        const user = await PublicUser.find(profile.userId)
+        user?.merge({ password: payload.password }).save()
+        delete payload.password
+      }
       const updated = await profile.merge(payload).save()
 
       return response.ok({

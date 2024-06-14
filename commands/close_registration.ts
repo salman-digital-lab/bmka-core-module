@@ -8,7 +8,9 @@ export default class CloseRegistration extends BaseCommand {
   static commandName = 'close:registration'
   static description = 'Set activity is_published as 0'
 
-  static options: CommandOptions = {}
+  static options: CommandOptions = {
+    startApp: true,
+  }
 
   async run() {
     try {
@@ -17,7 +19,10 @@ export default class CloseRegistration extends BaseCommand {
         .where('registration_end', '<', DateTime.local().toSQLDate())
         .update({ is_published: 0 }, ['id', 'slug'])
 
-      logger.info(activities)
+      logger.info('completed: unpublished activities')
+      for (let data of activities) {
+        logger.info('ID ' + data.id)
+      }
     } catch (error) {
       logger.error(error.message)
     }

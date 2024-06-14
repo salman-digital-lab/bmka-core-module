@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('province_id').references('provinces.id').onDelete('CASCADE').nullable()
       table.string('name')
+      table.boolean('is_active').defaultTo(true)
     })
   }
 

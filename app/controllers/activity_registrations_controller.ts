@@ -7,14 +7,55 @@ import db from '@adonisjs/lucid/services/db'
 import {
   updateActivityRegistrations,
   bulkUpdateActivityRegistrations,
+  storeActivityRegistration,
 } from '#validators/activity_validator'
 
 export default class ActivityRegistrationsController {
+  async store({ params, request, response }: HttpContext) {
+    const payload = await storeActivityRegistration.validate(request.all())
+    const activityId = params.id
+    try {
+      const userData = await Profile.findOrFail(payload.user_id)
+      const activity = await Activity.findOrFail(activityId)
+      const registered = await ActivityRegistration.query().where({
+        user_id: payload.user_id,
+        activity_id: activity.id,
+      })
+
+      if (registered && registered.length) {
+        return response.conflict({
+          message: 'ALREADY_REGISTERED',
+        })
+      }
+
+      if (userData.level < activity.minimumLevel) {
+        return response.forbidden({
+          message: 'UNMATCHED_LEVEL',
+        })
+      }
+      const registration = await ActivityRegistration.create({
+        userId: payload.user_id,
+        activityId: activity.id,
+        status: 'TERDAFTAR',
+        questionnaireAnswer: payload.questionnaire_answer,
+      })
+
+      return response.ok({
+        messages: 'CREATE_DATA_SUCCESS',
+        data: registration,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
   async show({ params, response }: HttpContext) {
     const registrationId: number = params.id
     try {
       const registration = await ActivityRegistration.findOrFail(registrationId)
-      registration.questionnaireAnswer = JSON.parse(registration.questionnaireAnswer)
 
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
@@ -37,10 +78,9 @@ export default class ActivityRegistrationsController {
 
     try {
       const activity = await Activity.findOrFail(activityId)
-      const config = JSON.parse(activity.additionalConfig)
-      const mandatoryData: string[] = config.mandatory_profile_data
-      mandatoryData.map((element) => {
-        element = 'profiles.' + element
+      const mandatoryData = activity.additionalConfig.mandatory_profile_data
+      const profileDataField = mandatoryData.map((element) => {
+        return 'profiles.' + element.name
       })
 
       const registrations = await db
@@ -56,7 +96,7 @@ export default class ActivityRegistrationsController {
           'public_users.email',
           'profiles.name',
           'profiles.level',
-          ...mandatoryData,
+          ...profileDataField,
           'activity_registrations.status'
         )
         .orderBy('activity_registrations.id', 'desc')
@@ -147,8 +187,11 @@ export default class ActivityRegistrationsController {
         { header: 'Gender', key: 'gender', width: 7, style: { font: font } },
         { header: 'Email', key: 'email', width: 30, style: { font: font } },
         { header: 'Whatsapp', key: 'whatsapp', width: 20, style: { font: font } },
+        { header: 'Personal ID', key: 'personal_id', width: 15, style: { font: font } },
         { header: 'Line ID', key: 'line', width: 15, style: { font: font } },
         { header: 'Instagram', key: 'instagram', width: 15, style: { font: font } },
+        { header: 'TikTok', key: 'tiktok', width: 15, style: { font: font } },
+        { header: 'LinkedIn', key: 'linkedin', width: 15, style: { font: font } },
         {
           header: 'Province',
           key: 'province',
@@ -172,9 +215,15 @@ export default class ActivityRegistrationsController {
         { header: 'Role', key: 'level', width: 15, style: { font: font } },
       ]
 
-      const questions: Array<{ label: string; name: string }> = JSON.parse(
-        activity.additionalQuestionnaire
-      )
+      const questions: Array<{
+        label: string
+        name: string
+        type: string
+        required: boolean
+        data?: Array<{ id: number; label: string; value: string }>
+      }> = activity.additionalConfig.additional_questionnaire
+
+      const keys: string[] = []
       questions.forEach((question) => {
         worksheet.columns = [
           ...worksheet.columns,
@@ -185,7 +234,12 @@ export default class ActivityRegistrationsController {
             style: { font: font },
           },
         ]
+        keys.push(question.name) // store keys for worksheet.addRow
       })
+
+      var provinceName: string = ''
+      var cityName: string = ''
+      var universityName: string = ''
 
       for (let [i, item] of registrations.entries()) {
         let profile = await Profile.query()
@@ -195,17 +249,24 @@ export default class ActivityRegistrationsController {
           .preload('university')
           .firstOrFail()
 
+        if (profile.province) provinceName = profile.province.name
+        if (profile.city) cityName = profile.city.name
+        if (profile.university) universityName = profile.university.name
+
         let profileRowData = {
           no: i + 1,
           name: profile.name,
           gender: profile.gender,
           email: item.publicUser.email,
           whatsapp: profile.whatsapp,
+          personal_id: profile.personal_id,
           line: profile.line,
           instagram: profile.instagram,
-          province: profile.province.name,
-          city: profile.city.name,
-          university: profile.university.name,
+          tiktok: profile.tiktok,
+          linkedin: profile.linkedin,
+          province: provinceName,
+          city: cityName,
+          university: universityName,
           major: profile.major,
           intake_year: profile.intakeYear,
           level: profile.level,
@@ -213,19 +274,23 @@ export default class ActivityRegistrationsController {
         /*
 
         questionnaireAnswer sample:
+
         {
           "0":"Jawaban 1",
           "1":"Jawaban 2",
-          "2":"["Apple", "Peach"]",
-          "3":"Jawaban 2",
+          "2":"Jawaban 3",
+          "3":"Jawaban 4",
         }
 
         */
 
-        let parsedAnswers: { [index: string]: string } = JSON.parse(item.questionnaireAnswer)
-        let answers: string[] = Object.keys(parsedAnswers).map((key) => parsedAnswers[key])
-        let answerRowData = Object.assign({}, answers)
-        let rowData = { ...profileRowData, ...answerRowData }
+        const answers: { [index: string]: string } = item.questionnaireAnswer
+        const values: string[] = Object.values(answers)
+        const answerRowData: { [key: string]: string } = {}
+        for (const [index, key] of keys.entries()) {
+          answerRowData[key] = values[index]
+        }
+        const rowData = { ...profileRowData, ...answerRowData }
         worksheet.addRow(rowData)
       }
 
@@ -242,7 +307,7 @@ export default class ActivityRegistrationsController {
     } catch (error) {
       return response.internalServerError({
         message: 'GENERAL_ERROR',
-        error: error.message,
+        error: error.stack,
       })
     }
   }

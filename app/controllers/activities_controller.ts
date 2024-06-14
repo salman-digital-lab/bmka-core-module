@@ -90,11 +90,9 @@ export default class ActivitiesController {
         })
       }
 
-      var fileNames: string[]
-      if (activity.images !== null) {
-        fileNames = activity.images.split(',')
-      } else {
-        fileNames = []
+      var fileNames: string[] = []
+      if (activity.additionalConfig.images) {
+        fileNames = activity.additionalConfig.images
       }
 
       const image = payload.images
@@ -106,8 +104,10 @@ export default class ActivitiesController {
       })
 
       fileNames.push(newName)
+      const newConfig = activity.additionalConfig
+      newConfig.images = fileNames
 
-      await activity.merge({ images: fileNames.toString() }).save()
+      await activity.merge({ additionalConfig: newConfig }).save()
 
       return response.ok({
         message: 'UPLOAD_IMAGE_SUCCESS',
@@ -127,18 +127,20 @@ export default class ActivitiesController {
     try {
       const activity = await Activity.findOrFail(activityId)
 
-      if (activity.images === null) {
+      if (activity.additionalConfig.images.length === 0) {
         return response.notFound({
           message: 'IMAGE_NOT_FOUND',
         })
       }
 
-      const filePath = `./public/activity-images/${activity.images[index]}`
+      const filePath = `./public/activity-images/${activity.additionalConfig.images[index]}`
       await unlink(filePath)
 
-      const images: string[] = activity.images.split(',')
+      const images: string[] = activity.additionalConfig.images
       images.splice(index, 1)
-      await activity.merge({ images: images.toString() }).save()
+      const newConfig = activity.additionalConfig
+      newConfig.images = images
+      await activity.merge({ additionalConfig: newConfig }).save()
 
       return response.ok({
         message: 'DELETE_IMAGE_SUCCESS',
@@ -191,6 +193,13 @@ export default class ActivitiesController {
     try {
       const id: number = params.id
       const activityData = await Activity.findOrFail(id)
+      if (payload.additional_config) {
+        var newConfig: any = payload.additional_config
+        if (activityData.additionalConfig.images) {
+          newConfig.images = activityData.additionalConfig.images
+        }
+      }
+      payload.additional_config = newConfig
       const updated = await activityData
         .merge({
           ...payload,

@@ -13,5 +13,7 @@ export const updateProfileValidator = vine.compile(
     intake_year: vine.string().optional(),
     major: vine.string().optional(),
     level: vine.number().optional(),
+    university_temp: vine.string().optional(),
+    password: vine.string().optional(),
   })
 )

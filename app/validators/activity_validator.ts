@@ -15,12 +15,14 @@ export const activityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_data: vine.array(vine.string()),
-        mandatory_profile_data: vine.array(vine.string()),
+        custom_selection_status: vine.array(vine.string()),
+        mandatory_profile_data: vine.array(
+          vine.object({ name: vine.string(), required: vine.boolean() })
+        ),
+        additional_questionnaire: vine.array(vine.any()),
       })
       .optional(),
     is_published: vine.number().optional(),
-    additional_questionnaire: vine.string().optional(),
     activity_category: vine.number().withoutDecimals().positive().optional(),
   })
 )
@@ -40,12 +42,14 @@ export const updateActivityValidator = vine.compile(
     activity_type: vine.number().withoutDecimals().positive().optional(),
     additional_config: vine
       .object({
-        custom_selection_data: vine.array(vine.string()),
-        mandatory_profile_data: vine.array(vine.string()),
+        custom_selection_status: vine.array(vine.string()),
+        mandatory_profile_data: vine.array(
+          vine.object({ name: vine.string(), required: vine.boolean() })
+        ),
+        additional_questionnaire: vine.array(vine.any()),
       })
       .optional(),
     is_published: vine.number().optional(),
-    additional_questionnaire: vine.string().optional(),
     activity_category: vine.number().withoutDecimals().positive().optional(),
   })
 )
@@ -56,6 +60,13 @@ export const imageValidator = vine.compile(
       size: '2mb',
       extnames: ['jpg', 'png', 'jpeg', 'PNG', 'JPG', 'JPEG'],
     }),
+  })
+)
+
+export const storeActivityRegistration = vine.compile(
+  vine.object({
+    user_id: vine.number(),
+    questionnaire_answer: vine.object({}).allowUnknownProperties(),
   })
 )
 

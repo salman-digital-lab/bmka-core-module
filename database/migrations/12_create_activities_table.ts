@@ -18,12 +18,12 @@ export default class extends BaseSchema {
       table.integer('minimum_level').nullable().defaultTo(0)
       table.integer('activity_type', 2).nullable().defaultTo(null)
       table.integer('activity_category').nullable().defaultTo(null)
-      table.string('images', 255).nullable().defaultTo(null)
-      table.text('additional_questionnaire', 'longtext').nullable().defaultTo('[]')
-      table.text('additional_config', 'longtext').nullable().defaultTo(`{
-        custom_selection_data: [],
+      table.jsonb('additional_config').nullable().defaultTo({
+        custom_selection_status: [],
         mandatory_profile_data: [],
-      }`)
+        additional_questionnaire: [],
+        images: [],
+      })
       table.integer('is_published', 1).defaultTo(1)
 
       table.timestamp('created_at', { useTz: true })

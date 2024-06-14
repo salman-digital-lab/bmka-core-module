@@ -17,11 +17,11 @@ export const ActivityRegistrationFactory = factory
         'TIDAK LULUS',
         'TIDAK DITERIMA',
       ]),
-      questionnaireAnswer: JSON.stringify({
+      questionnaireAnswer: {
         '0': 'google.drive.com/kdbhjehdbH',
         '1': 'share poster ke 3 wa grup',
         '2': 'Cukup besar',
-      }),
+      },
     }
   })
   .build()
@@ -35,11 +35,11 @@ export const ActivityRegistrationOnlyFactory = factory
       user_id: publicUsers[Math.floor(Math.random() * (publicUsers.length - 1))].id,
       activity_id: activities[Math.floor(Math.random() * (activities.length - 1))].id,
       status: 'TERDAFTAR',
-      questionnaireAnswer: JSON.stringify({
+      questionnaireAnswer: {
         '0': 'google.drive.com/kdbhjehdbH',
         '1': 'share poster ke 3 wa grup',
         '2': 'Cukup besar',
-      }),
+      },
     }
   })
   .build()
