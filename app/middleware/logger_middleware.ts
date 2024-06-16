@@ -5,19 +5,37 @@ export default class {
   async handle({ request, response, logger }: HttpContext, next: NextFn) {
     await next()
     const datetime = new Date().toLocaleString()
-    logger.info(
-      'Datetime:' +
-        datetime +
-        ' | IP: ' +
-        request.ip() +
-        ' | Method: ' +
-        request.method() +
-        ' | URL: ' +
-        request.url() +
-        ' | Response Status: ' +
-        JSON.stringify(response.getStatus()) +
-        ' | Response body: ' +
-        JSON.stringify(response.getBody())
-    )
+
+    if (response.getStatus() < 400) {
+      logger.info(
+        'DATE: ' +
+          datetime +
+          ' | IP: ' +
+          request.ip() +
+          ' | METHOD: ' +
+          request.method() +
+          ' | URL: ' +
+          request.url() +
+          ' | STATUS: ' +
+          JSON.stringify(response.getStatus()) +
+          ' | BODY: ' +
+          JSON.stringify(response.getBody())
+      )
+    } else {
+      logger.error(
+        'DATE: ' +
+          datetime +
+          ' | IP: ' +
+          request.ip() +
+          ' | METHOD: ' +
+          request.method() +
+          ' | URL: ' +
+          request.url() +
+          ' | STATUS: ' +
+          JSON.stringify(response.getStatus()) +
+          ' | BODY: ' +
+          JSON.stringify(response.getBody())
+      )
+    }
   }
 }
