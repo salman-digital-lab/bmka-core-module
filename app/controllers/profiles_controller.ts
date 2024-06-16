@@ -32,16 +32,16 @@ export default class ProfilesController {
   async show({ params, response }: HttpContext) {
     try {
       const id: number = params.id
-      const userData = await PublicUser.find(id)
       const profile = await Profile.query()
         .select('*')
-        .where('user_id', id)
+        .where('id', id)
         .preload('province')
         .preload('city')
+        .preload('publicUser')
 
       return response.ok({
         message: 'GET_DATA_SUCCESS',
-        data: { userData, profile },
+        data: { profile },
       })
     } catch (error) {
       return response.internalServerError({

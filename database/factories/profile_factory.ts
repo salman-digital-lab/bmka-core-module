@@ -27,7 +27,7 @@ export const ProfileFactory = factory
       university_id: universities[Math.floor(Math.random() * (universities.length - 1))].id,
       intake_year: faker.number.int({ min: 2010, max: 2023 }),
       major: faker.lorem.word(),
-      level: faker.number.int({ min: 1, max: 7 }),
+      level: faker.number.int({ min: 0, max: 6 }),
     }
   })
   .build()
@@ -55,7 +55,7 @@ export const RealProfileFactory = factory
       university_id: universities[Math.floor(Math.random() * (universities.length - 1))].id,
       intake_year: faker.number.int({ min: 2010, max: 2023 }),
       major: faker.lorem.word(),
-      level: faker.number.int({ min: 1, max: 7 }),
+      level: faker.number.int({ min: 0, max: 6 }),
     }
   })
   .build()
