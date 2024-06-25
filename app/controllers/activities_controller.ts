@@ -25,7 +25,7 @@ export default class ActivitiesController {
 
       if (request.qs().category) clause.activity_category = request.qs().category
 
-      if (request.qs().minimumLevel) clause.minimum_level = request.qs().minimumLevel
+      if (request.qs().minimum_level) clause.minimum_level = request.qs().minimum_level
 
       if (request.qs().activity_type) clause.activity_type = request.qs().activity_type
 
