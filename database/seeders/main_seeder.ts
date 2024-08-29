@@ -31,11 +31,11 @@ export default class extends BaseSeeder {
       await ProfileFactory.merge({ userId: user.id }).create()
     }
 
-    await ActivityRegistrationOnlyFactory.createMany(50)
+    await ActivityRegistrationOnlyFactory.createMany(200)
     await RuangCurhatFactory.createMany(10)
 
-    await FinishedActivityFactory.createMany(15)
-    await ActivityRegistrationFactory.createMany(50)
+    await FinishedActivityFactory.createMany(5)
+    await ActivityRegistrationFactory.createMany(200)
 
     // Real Data Seeder
     await RealAdminUserFactory.create()

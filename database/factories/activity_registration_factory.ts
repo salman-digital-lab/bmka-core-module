@@ -18,9 +18,9 @@ export const ActivityRegistrationFactory = factory
         'TIDAK DITERIMA',
       ]),
       questionnaireAnswer: {
-        '0': 'google.drive.com/kdbhjehdbH',
-        '1': 'share poster ke 3 wa grup',
-        '2': 'Cukup besar',
+        question1664618698378: 'google.drive.com/kdbhjehdbH',
+        question1664618817082: 'share poster ke 3 wa grup',
+        question1664619435933: 'Cukup besar',
       },
     }
   })
@@ -36,9 +36,9 @@ export const ActivityRegistrationOnlyFactory = factory
       activity_id: activities[Math.floor(Math.random() * (activities.length - 1))].id,
       status: 'TERDAFTAR',
       questionnaireAnswer: {
-        '0': 'google.drive.com/kdbhjehdbH',
-        '1': 'share poster ke 3 wa grup',
-        '2': 'Cukup besar',
+        question1664618698378: 'google.drive.com/kdbhjehdbH',
+        question1664618817082: 'share poster ke 3 wa grup',
+        question1664619435933: 'Cukup besar',
       },
     }
   })

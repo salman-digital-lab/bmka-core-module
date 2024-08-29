@@ -36,6 +36,7 @@ export default class ProfilesController {
         .select('*')
         .where('id', id)
         .preload('province')
+        .preload('university')
         .preload('city')
         .preload('publicUser')
 
