@@ -2,7 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import RuangCurhat from '#models/ruang_curhat'
 import { UpdateRuangCurhatValidator } from '#validators/ruang_curhat_validator'
 
-export default class UniversitiesController {
+export default class RuangCurhatController {
   async index({ request, response }: HttpContext) {
     try {
       const page = request.qs().page ?? 1
@@ -10,6 +10,7 @@ export default class UniversitiesController {
 
       const ruangCurhat = await RuangCurhat.query()
         .select('*')
+        .preload('publicUser')
         .orderBy('id', 'desc')
         .paginate(page, perPage)
 
