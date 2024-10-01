@@ -1,5 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+
+const AdminusersController = () => import('#controllers/adminusers_controller')
 const ProfilesController = () => import('#controllers/profiles_controller')
 const ActivitiesController = () => import('#controllers/activities_controller')
 const ActivityRegistrationsController = () =>
@@ -27,6 +29,16 @@ router
         router.put('logout', [AuthController, 'logout']).use(middleware.auth())
       })
       .prefix('auth')
+
+    router
+      .group(() => {
+        router.get('', [AdminusersController, 'index'])
+        router.get(':id', [AdminusersController, 'show'])
+        router.post(':id', [AdminusersController, 'create'])
+        router.put(':id', [AdminusersController, 'editPassword'])
+      })
+      .prefix('admin-users')
+      .use(middleware.auth())
 
     router
       .group(() => {
