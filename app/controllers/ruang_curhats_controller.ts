@@ -31,6 +31,9 @@ export default class RuangCurhatController {
       const id: number = params.id
       const ruangCurhat = await RuangCurhat.findOrFail(id)
 
+      await ruangCurhat.load('publicUser')
+      await ruangCurhat.load('adminUser')
+
       return response.ok({
         message: 'GET_DATA_SUCCESS',
         data: ruangCurhat,
