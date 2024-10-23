@@ -1,5 +1,5 @@
 import AdminUser from '#models/admin_user'
-import { editPasswordValidator, registerValidator } from '#validators/auth_validator'
+import { editAdminUser, editPasswordValidator, registerValidator } from '#validators/auth_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AdminusersController {
@@ -11,7 +11,10 @@ export default class AdminusersController {
       const page = request.qs().page ?? 1
       const perPage = request.qs().per_page ?? 10
 
-      const permissions = await AdminUser.query().select('*').paginate(page, perPage)
+      const permissions = await AdminUser.query()
+        .select('*')
+        .preload('role')
+        .paginate(page, perPage)
 
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
@@ -68,6 +71,25 @@ export default class AdminusersController {
       return response.ok({
         message: 'GET_DATA_SUCCESS',
         data: permission,
+      })
+    } catch (error) {
+      return response.internalServerError({
+        message: 'GENERAL_ERROR',
+        error: error.message,
+      })
+    }
+  }
+
+  async update({ params, request, response }: HttpContext) {
+    const payload = await editAdminUser.validate(request.all())
+    try {
+      const id: number = params.id
+      const role = await AdminUser.findOrFail(id)
+      const updated = await role.merge({ role_id: payload.role_id }).save()
+
+      return response.ok({
+        message: 'UPDATE_DATA_SUCCESS',
+        data: updated,
       })
     } catch (error) {
       return response.internalServerError({

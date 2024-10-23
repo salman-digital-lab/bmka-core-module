@@ -8,10 +8,7 @@ export default class RolesController {
       const page = request.qs().page ?? 1
       const perPage = request.qs().per_page ?? 10
 
-      const roles = await Role.query()
-        .select('*')
-        .orderBy('role_name', 'asc')
-        .paginate(page, perPage)
+      const roles = await Role.query().select('*').orderBy('id', 'asc').paginate(page, perPage)
 
       return response.ok({
         messages: 'GET_DATA_SUCCESS',
