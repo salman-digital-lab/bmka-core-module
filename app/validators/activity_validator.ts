@@ -66,7 +66,7 @@ export const imageValidator = vine.compile(
 export const storeActivityRegistration = vine.compile(
   vine.object({
     user_id: vine.number(),
-    questionnaire_answer: vine.object({}).allowUnknownProperties(),
+    questionnaire_answer: vine.record(vine.any()),
   })
 )
 
